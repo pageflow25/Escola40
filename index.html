@@ -1084,7 +1084,7 @@ textarea.grande { min-height: 200px; }
       <h2>Finalizou?</h2>
       <p>Confira suas respostas e clique em <strong>"Baixar respostas em PDF"</strong>. Vai gerar um arquivo bonito e organizado que você deve <strong>enviar para o e-mail rafaelrodrigues@casadagrafica.com</strong> ou entregar diretamente ao responsável pelo programa.</p>
       <div class="botoes">
-        <button type="button" class="btn btn-primary" onclick="baixarPDF()">📄 Baixar respostas em PDF</button>
+        <button type="button" class="btn btn-primary" onclick="baixarPDF(event)">📄 Baixar respostas em PDF</button>
       </div>
       <div class="envio-foot">Ao enviar, você confirma que respondeu individualmente, sem consulta a colegas.</div>
     </section>
@@ -1119,6 +1119,7 @@ const EMAIL_DESTINO = "rafaelrodrigues@casadagrafica.com";
 const STORAGE_KEY = "escola40_prova_rascunho";
 const form = document.getElementById('provaForm');
 const todosCampos = form.querySelectorAll('input, textarea');
+let ultimoPdfMobileUrl = null;
 
 // Definir data automática
 document.getElementById('data').valueAsDate = new Date();
@@ -1197,8 +1198,78 @@ function coletarDados() {
   return dados;
 }
 
+function dispositivoEhMobile() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
+
+function abrirJanelaPreviewMobile() {
+  const previewWindow = window.open('', '_blank');
+  if (!previewWindow) return null;
+
+  previewWindow.document.write(`
+    <html>
+    <head>
+      <title>Gerando PDF...</title>
+      <style>
+        body {
+          margin: 0;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 24px;
+          background: #1F3A5F;
+          color: white;
+          font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+          text-align: center;
+        }
+        .box {
+          max-width: 420px;
+        }
+        h2 {
+          margin: 0 0 12px;
+          font-size: 24px;
+        }
+        p {
+          margin: 0;
+          line-height: 1.5;
+          color: rgba(255,255,255,0.8);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="box">
+        <h2>Gerando seu PDF...</h2>
+        <p>Aguarde alguns segundos enquanto preparamos o arquivo completo para visualizacao.</p>
+      </div>
+    </body>
+    </html>
+  `);
+  previewWindow.document.close();
+
+  return previewWindow;
+}
+
+function abrirPDFMobile(doc, previewWindow) {
+  if (ultimoPdfMobileUrl) {
+    URL.revokeObjectURL(ultimoPdfMobileUrl);
+  }
+
+  const pdfBlob = doc.output('blob');
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+  ultimoPdfMobileUrl = pdfUrl;
+
+  if (previewWindow && !previewWindow.closed) {
+    previewWindow.location.href = pdfUrl;
+  } else {
+    window.location.href = pdfUrl;
+  }
+
+  document.getElementById('modalSucesso').classList.add('show');
+}
+
 // ============ BAIXAR EM PDF ============
-function baixarPDF() {
+function baixarPDF(event) {
   if (!validarCamposObrigatorios()) return;
 
   // Verificar se a biblioteca carregou
@@ -1207,28 +1278,39 @@ function baixarPDF() {
     return;
   }
 
+  const previewWindow = dispositivoEhMobile() ? abrirJanelaPreviewMobile() : null;
+
   // Mostrar loading
-  const btn = event.target;
-  const textoOriginal = btn.innerHTML;
-  btn.innerHTML = '⏳ Gerando PDF...';
-  btn.disabled = true;
+  const btn = event?.currentTarget || document.querySelector('.btn-primary[onclick*="baixarPDF"]');
+  const textoOriginal = btn ? btn.innerHTML : '';
+  if (btn) {
+    btn.innerHTML = '⏳ Gerando PDF...';
+    btn.disabled = true;
+  }
 
   // Pequeno delay pra UI atualizar antes do processamento pesado
   setTimeout(() => {
     try {
-      gerarPDF();
-      btn.innerHTML = textoOriginal;
-      btn.disabled = false;
+      gerarPDF(previewWindow);
+      if (btn) {
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+      }
     } catch (err) {
       console.error('Erro ao gerar PDF:', err);
-      btn.innerHTML = textoOriginal;
-      btn.disabled = false;
+      if (previewWindow && !previewWindow.closed) {
+        previewWindow.close();
+      }
+      if (btn) {
+        btn.innerHTML = textoOriginal;
+        btn.disabled = false;
+      }
       alert('Houve um erro ao gerar o PDF. Tente novamente ou peça ajuda ao responsável pelo programa.\n\nDetalhe técnico: ' + err.message);
     }
   }, 100);
 }
 
-function gerarPDF() {
+function gerarPDF(previewWindow) {
   const dados = coletarDados();
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({ unit: 'mm', format: 'a4' });
@@ -1445,58 +1527,9 @@ function gerarPDF() {
     .toLowerCase();
   const nomeCompleto = `Escola40_Avaliacao_${nomeArquivo}.pdf`;
 
-  // Detectar se é dispositivo móvel
-  const ehMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const ehIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  if (ehIOS) {
-    // iOS: abre o PDF em data URI numa nova aba — usuário usa o botão "Compartilhar" do Safari
-    const pdfDataUri = doc.output('datauristring', { filename: nomeCompleto });
-    const novaJanela = window.open();
-    if (novaJanela) {
-      novaJanela.document.write(`
-        <html>
-        <head>
-          <title>${nomeCompleto}</title>
-          <style>
-            body { margin: 0; font-family: -apple-system, sans-serif; background: #1F3A5F; color: white; text-align: center; padding: 20px; }
-            .aviso { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-            h2 { margin: 0 0 12px; }
-            p { margin: 8px 0; line-height: 1.5; }
-            iframe { width: 100%; height: 80vh; border: 0; background: white; border-radius: 4px; }
-            strong { color: #F2B8C1; }
-          </style>
-        </head>
-        <body>
-          <div class="aviso">
-            <h2>📄 Seu PDF está pronto</h2>
-            <p>Toque no botão <strong>Compartilhar</strong> do Safari (quadrado com seta pra cima) e envie por e-mail ou WhatsApp para:</p>
-            <p><strong>rafaelrodrigues@casadagrafica.com</strong></p>
-          </div>
-          <iframe src="${pdfDataUri}"></iframe>
-        </body>
-        </html>
-      `);
-      novaJanela.document.close();
-    } else {
-      // Bloqueado popup — fallback pra abrir direto
-      window.location.href = pdfDataUri;
-    }
-    document.getElementById('modalSucesso').classList.add('show');
-  } else if (ehMobile) {
-    // Android e outros: tentar save normal, depois abrir como blob como fallback
-    try {
-      doc.save(nomeCompleto);
-      document.getElementById('modalSucesso').classList.add('show');
-    } catch (e) {
-      // Fallback Android: blob URL
-      const pdfBlob = doc.output('blob');
-      const url = URL.createObjectURL(pdfBlob);
-      window.open(url, '_blank');
-      document.getElementById('modalSucesso').classList.add('show');
-    }
+  if (dispositivoEhMobile()) {
+    abrirPDFMobile(doc, previewWindow);
   } else {
-    // Desktop: comportamento normal
     doc.save(nomeCompleto);
     document.getElementById('modalSucesso').classList.add('show');
   }
