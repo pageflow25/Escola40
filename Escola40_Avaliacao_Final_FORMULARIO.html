@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Escola 40+ — Avaliação Final | Casa da Gráfica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root {
+  --azul: #1F3A5F;
+  --azul-claro: #2E5A8A;
+  --vermelho: #C8102E;
+  --bege: #FAF7F2;
+  --bege-escuro: #F0EAE0;
+  --cinza: #595959;
+  --cinza-claro: #8A8A8A;
+  --borda: #E5DFD3;
+  --verde: #2D7A4F;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Inter', -apple-system, sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--body);
+  background: var(--bege);
+  color: #1a1a1a;
+  line-height: 1.6;
+  font-size: 16px;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(circle at 20% 0%, rgba(31, 58, 95, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 100%, rgba(200, 16, 46, 0.03) 0%, transparent 50%);
+}
+
+.wrap {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ============ CAPA ============ */
+.hero {
+  background: var(--azul);
+  color: white;
+  padding: 56px 48px;
+  border-radius: 4px;
+  margin-bottom: 32px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px -20px rgba(31, 58, 95, 0.4);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(200, 16, 46, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-tag {
+  font-family: var(--body);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.hero h1 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: clamp(40px, 6vw, 64px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 500;
+  color: #F2B8C1;
+  display: block;
+}
+
+.hero-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,0.8);
+  max-width: 540px;
+  margin-top: 16px;
+  font-weight: 400;
+}
+
+.hero-decor {
+  position: absolute;
+  bottom: 24px;
+  right: 32px;
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.05em;
+}
+
+/* ============ INSTRUÇÕES ============ */
+.intro {
+  background: white;
+  border: 1px solid var(--borda);
+  border-radius: 4px;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+  position: relative;
+}
+
+.intro h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--azul);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.intro h2::before {
+  content: '';
+  width: 32px;
+  height: 2px;
+  background: var(--vermelho);
+}
+
+.intro ul {
+  list-style: none;
+}
+
+.intro li {
+  padding: 8px 0 8px 28px;
+  position: relative;
+  font-size: 15px;
+  color: #2a2a2a;
+}
+
+.intro li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: var(--vermelho);
+  font-weight: 700;
+}
+
+.intro li strong { color: var(--azul); font-weight: 600; }
+
+/* ============ IDENTIFICAÇÃO ============ */
+.bloco-id {
+  background: white;
+  border: 1px solid var(--borda);
+  border-radius: 4px;
+  padding: 32px 36px;
+  margin-bottom: 32px;
+}
+
+.bloco-id h2 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--azul);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bloco-id h2::before {
+  content: '';
+  width: 32px;
+  height: 2px;
+  background: var(--vermelho);
+}
+
+.grid-id {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.grid-id .full { grid-column: 1 / -1; }
+
+/* ============ QUESTÕES ============ */
+.questao {
+  background: white;
+  border: 1px solid var(--borda);
+  border-radius: 4px;
+  padding: 40px 36px;
+  margin-bottom: 24px;
+  position: relative;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.questao:focus-within {
+  border-color: var(--azul);
+  box-shadow: 0 8px 24px -8px rgba(31, 58, 95, 0.15);
+}
+
+.questao-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--bege-escuro);
+  flex-wrap: wrap;
+}
+
+.questao-num {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 48px;
+  color: var(--azul);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.questao-meta { flex: 1; min-width: 200px; }
+
+.questao-tema {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 22px;
+  color: #1a1a1a;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.questao-tipo {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+
+.tipo-conceitual {
+  background: var(--bege-escuro);
+  color: var(--cinza);
+}
+
+.tipo-proposta {
+  background: rgba(200, 16, 46, 0.1);
+  color: var(--vermelho);
+}
+
+.enunciado {
+  font-size: 15px;
+  color: #2a2a2a;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--bege);
+  border-left: 3px solid var(--azul);
+  border-radius: 2px;
+}
+
+.subitem { margin-bottom: 24px; }
+.subitem:last-child { margin-bottom: 0; }
+
+.subitem-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #1a1a1a;
+}
+
+.subitem-letra {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--vermelho);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.subitem-pergunta {
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.citacao {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--cinza);
+  background: var(--bege);
+  padding: 16px 20px;
+  border-left: 3px solid var(--cinza-claro);
+  margin: 12px 0;
+  border-radius: 2px;
+}
+
+/* ============ INPUTS ============ */
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cinza);
+  margin-bottom: 8px;
+}
+
+input[type="text"], input[type="email"], input[type="date"], textarea {
+  width: 100%;
+  border: 1px solid var(--borda);
+  background: var(--bege);
+  padding: 12px 16px;
+  font-family: var(--body);
+  font-size: 15px;
+  color: #1a1a1a;
+  border-radius: 3px;
+  transition: all 0.2s;
+  resize: vertical;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="date"]:focus, textarea:focus {
+  outline: none;
+  border-color: var(--azul);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.1);
+}
+
+textarea {
+  min-height: 120px;
+  line-height: 1.6;
+  font-family: var(--body);
+}
+
+textarea.media { min-height: 160px; }
+textarea.grande { min-height: 200px; }
+
+.char-count {
+  text-align: right;
+  font-size: 11px;
+  color: var(--cinza-claro);
+  margin-top: 4px;
+  letter-spacing: 0.05em;
+}
+
+/* ============ BARRA DE PROGRESSO ============ */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--azul), var(--vermelho));
+  width: 0%;
+  z-index: 100;
+  transition: width 0.3s;
+}
+
+.progress-info {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--azul);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px -8px rgba(31, 58, 95, 0.5);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.progress-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.salvo-msg {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  background: var(--verde);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 8px 24px -8px rgba(45, 122, 79, 0.5);
+  z-index: 200;
+  transition: transform 0.4s;
+}
+
+.salvo-msg.show { transform: translateX(-50%) translateY(0); }
+
+/* ============ BOTÕES DE ENVIO ============ */
+.envio {
+  background: var(--azul);
+  color: white;
+  padding: 48px 40px;
+  border-radius: 4px;
+  margin-top: 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.envio::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  left: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(200, 16, 46, 0.2) 0%, transparent 70%);
+}
+
+.envio h2 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 36px;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+  position: relative;
+}
+
+.envio p {
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 32px;
+  font-size: 15px;
+  position: relative;
+}
+
+.botoes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  position: relative;
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 24px;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--vermelho);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #a30d24;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -8px rgba(200, 16, 46, 0.5);
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--azul);
+}
+
+.btn-secondary:hover {
+  background: var(--bege);
+  transform: translateY(-2px);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: white;
+}
+
+.envio-foot {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255,255,255,0.15);
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  font-style: italic;
+  font-family: var(--display);
+  position: relative;
+}
+
+/* ============ FOOTER ============ */
+.footer {
+  text-align: center;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--borda);
+  font-size: 12px;
+  color: var(--cinza-claro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.footer strong {
+  color: var(--azul);
+  font-family: var(--display);
+  font-style: italic;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 14px;
+  display: block;
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+/* ============ MODAL CONFIRMAÇÃO ============ */
+.modal-bg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.modal-bg.show { display: flex; }
+
+.modal {
+  background: var(--bege);
+  border-radius: 6px;
+  padding: 48px 40px;
+  max-width: 480px;
+  text-align: center;
+  animation: slideUp 0.4s;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--verde);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.modal h2 {
+  font-family: var(--display);
+  font-weight: 900;
+  font-size: 32px;
+  color: var(--azul);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.modal p {
+  color: var(--cinza);
+  margin-bottom: 24px;
+  font-size: 15px;
+}
+
+/* ============ MOBILE ============ */
+@media (max-width: 640px) {
+  .wrap { padding: 20px 16px 60px; }
+  .hero { padding: 36px 24px; }
+  .intro, .bloco-id, .questao, .envio { padding: 28px 20px; }
+  .grid-id { grid-template-columns: 1fr; }
+  .questao-num { font-size: 36px; }
+  .questao-tema { font-size: 18px; }
+  .envio h2 { font-size: 28px; }
+  .progress-info { font-size: 11px; padding: 8px 12px; }
+}
+
+@media print {
+  body { background: white; }
+  .progress-bar, .progress-info, .envio { display: none; }
+  .questao { page-break-inside: avoid; border: 1px solid #ccc; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="progressBar"></div>
+<div class="progress-info">
+  <span class="progress-dot"></span>
+  <span id="progressText">0% preenchido</span>
+</div>
+<div class="salvo-msg" id="salvoMsg">✓ Rascunho salvo automaticamente</div>
+
+<div class="wrap">
+
+  <!-- CAPA -->
+  <header class="hero">
+    <div class="hero-tag">Casa da Gráfica • Programa Interno</div>
+    <h1>Escola 40+<em>Avaliação Final</em></h1>
+    <p class="hero-sub">Esta é a etapa final do nosso programa. Aqui você mostra o quanto absorveu, o quanto pensou e o quanto consegue se diferenciar pelo que aprendeu.</p>
+    <div class="hero-decor">"Quem entrega mais valor, ganha mais."</div>
+  </header>
+
+  <!-- INSTRUÇÕES -->
+  <section class="intro">
+    <h2>Antes de começar</h2>
+    <ul>
+      <li>São <strong>10 questões abertas</strong>, divididas em subitens. Reserve cerca de <strong>90 minutos</strong> para responder com calma.</li>
+      <li>Suas respostas são salvas automaticamente no seu navegador. Se precisar fechar e voltar depois, abra <strong>nesta mesma máquina e navegador</strong> e continue de onde parou.</li>
+      <li>Questões marcadas como <strong>PESQUISA / PROPOSTA</strong> exigem mais do que conteúdo memorizado: queremos ver como você pensa, propõe e se diferencia.</li>
+      <li><strong>Clareza, organização e bom português</strong> também serão avaliados.</li>
+      <li>Ao final, você vai <strong>baixar suas respostas em PDF</strong> e enviar para <strong>rafaelrodrigues@casadagrafica.com</strong>.</li>
+    </ul>
+  </section>
+
+  <form id="provaForm">
+
+    <!-- IDENTIFICAÇÃO -->
+    <section class="bloco-id">
+      <h2>Identificação</h2>
+      <div class="grid-id">
+        <div class="full">
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" name="nome" required>
+        </div>
+        <div>
+          <label for="setor">Setor</label>
+          <input type="text" id="setor" name="setor" required>
+        </div>
+        <div>
+          <label for="cargo">Cargo</label>
+          <input type="text" id="cargo" name="cargo" required>
+        </div>
+        <div>
+          <label for="email">E-mail (opcional)</label>
+          <input type="email" id="email" name="email">
+        </div>
+        <div>
+          <label for="data">Data</label>
+          <input type="date" id="data" name="data" required>
+        </div>
+      </div>
+    </section>
+
+    <!-- QUESTÕES -->
+    <!-- Q1 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">01</div>
+        <div class="questao-meta">
+          <div class="questao-tema">História da Casa da Gráfica</div>
+          <span class="questao-tipo tipo-conceitual">Conceitual</span>
+        </div>
+      </div>
+      <p class="enunciado">A Casa da Gráfica não é uma gráfica comum: nós nos posicionamos como uma <strong>empresa de educação que entrega serviços gráficos</strong>. A partir dessa frase e do que você aprendeu sobre a história da CDG, responda:</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Cite a Missão, a Visão e pelo menos TRÊS Valores da Casa da Gráfica, explicando com suas palavras o que cada Valor significa no dia a dia de trabalho.</span>
+        </div>
+        <textarea name="q1a" class="grande"></textarea>
+        <div class="char-count" data-target="q1a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Explique, em até 5 linhas, por que dizemos que a CDG é "uma empresa de educação que entrega serviços gráficos" — e qual é a diferença prática disso em relação a uma gráfica que atende qualquer mercado.</span>
+        </div>
+        <textarea name="q1b" class="media"></textarea>
+        <div class="char-count" data-target="q1b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">Quem é o cliente da CDG? Descreva o perfil dele e o que ele espera de nós.</span>
+        </div>
+        <textarea name="q1c" class="media"></textarea>
+        <div class="char-count" data-target="q1c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q2 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">02</div>
+        <div class="questao-meta">
+          <div class="questao-tema">Comunicação efetiva e Língua Portuguesa</div>
+          <span class="questao-tipo tipo-conceitual">Conceitual</span>
+        </div>
+      </div>
+      <p class="enunciado">Comunicação ruim custa caro: gera retrabalho, atraso e desgaste com o cliente.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Explique, com suas palavras, o que é comunicação efetiva e cite TRÊS elementos que fazem uma mensagem (oral ou escrita) ser realmente compreendida pelo outro.</span>
+        </div>
+        <textarea name="q2a" class="media"></textarea>
+        <div class="char-count" data-target="q2a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Reescreva o e-mail abaixo corrigindo os erros de português, clareza e tom profissional:</span>
+        </div>
+        <div class="citacao">"Oi, blz? Então, a gente vai precisar atrazar a entrega do material da escola pq teve um problema aki na produção, mais tipo, nada de mais, depois eu te falo. Qualquer coisa me chama."</div>
+        <textarea name="q2b" class="grande"></textarea>
+        <div class="char-count" data-target="q2b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">Cite DOIS erros de português que você percebe que ainda acontecem com frequência no seu dia a dia de trabalho (em WhatsApp, e-mail, recados, anotações) e explique como corrigi-los.</span>
+        </div>
+        <textarea name="q2c" class="media"></textarea>
+        <div class="char-count" data-target="q2c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q3 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">03</div>
+        <div class="questao-meta">
+          <div class="questao-tema">IA na Prática</div>
+          <span class="questao-tipo tipo-proposta">Pesquisa / Proposta</span>
+        </div>
+      </div>
+      <p class="enunciado">Inteligência Artificial deixou de ser tendência: virou ferramenta de trabalho. Na Escola 40+ falamos sobre como usar a IA para ganhar tempo e qualidade no que você faz.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Com suas palavras, explique o que é um PROMPT e por que a qualidade do prompt determina a qualidade da resposta da IA.</span>
+        </div>
+        <textarea name="q3a"></textarea>
+        <div class="char-count" data-target="q3a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Cite DUAS tarefas do seu dia a dia em que a IA pode te ajudar AGORA. Para cada uma, escreva um exemplo de prompt que você usaria.</span>
+        </div>
+        <textarea name="q3b" class="media"></textarea>
+        <div class="char-count" data-target="q3b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">PROPOSTA: Imagine que você precisa convencer um colega que ainda resiste em usar IA. Escreva, em até 8 linhas, o argumento que você usaria — mostrando ganho real e respondendo à dúvida "vai me substituir?".</span>
+        </div>
+        <textarea name="q3c" class="grande"></textarea>
+        <div class="char-count" data-target="q3c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q4 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">04</div>
+        <div class="questao-meta">
+          <div class="questao-tema">Marketing e Vendas</div>
+          <span class="questao-tipo tipo-conceitual">Conceitual</span>
+        </div>
+      </div>
+      <p class="enunciado">Numa empresa, todo mundo faz marketing e vendas — mesmo quem não está no comercial. A forma como cada um atende, responde e entrega comunica o valor da marca.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Qual a diferença entre MARKETING e VENDAS? Explique com suas palavras.</span>
+        </div>
+        <textarea name="q4a" class="media"></textarea>
+        <div class="char-count" data-target="q4a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Cite TRÊS atitudes que você implementaria na CDG, independente do setor, visando aumentar as vendas. Para cada atitude, explique o porquê.</span>
+        </div>
+        <textarea name="q4b" class="grande"></textarea>
+        <div class="char-count" data-target="q4b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">O que é PROPOSTA DE VALOR? Qual é, na sua visão, a proposta de valor da CDG para a escola cliente?</span>
+        </div>
+        <textarea name="q4c" class="media"></textarea>
+        <div class="char-count" data-target="q4c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q5 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">05</div>
+        <div class="questao-meta">
+          <div class="questao-tema">Metodologia DISC</div>
+          <span class="questao-tipo tipo-conceitual">Conceitual</span>
+        </div>
+      </div>
+      <p class="enunciado">O DISC nos ajuda a entender por que pessoas diferentes reagem de forma diferente diante da mesma situação — e como nos comunicar melhor com cada uma.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">O que significa cada uma das letras D, I, S e C? Descreva, em uma frase, a característica principal de cada perfil.</span>
+        </div>
+        <textarea name="q5a" class="media"></textarea>
+        <div class="char-count" data-target="q5a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Qual perfil DISC você reconhece em VOCÊ MESMO como predominante? Cite DOIS pontos fortes e UM ponto de atenção desse perfil no ambiente de trabalho.</span>
+        </div>
+        <textarea name="q5b" class="media"></textarea>
+        <div class="char-count" data-target="q5b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">Descreva uma situação real de relacionamento (pessoal ou profissional) em que entender o DISC da outra pessoa teria evitado um ruído de comunicação. O que você faria diferente hoje?</span>
+        </div>
+        <textarea name="q5c" class="grande"></textarea>
+        <div class="char-count" data-target="q5c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q6 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">06</div>
+        <div class="questao-meta">
+          <div class="questao-tema">Cultura e Liderança</div>
+          <span class="questao-tipo tipo-conceitual">Conceitual</span>
+        </div>
+      </div>
+      <p class="enunciado">Cultura é o que acontece quando o líder não está olhando. Liderança não é cargo — é influência.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Com suas palavras, explique o que é CULTURA ORGANIZACIONAL e dê DOIS exemplos concretos da cultura da Casa da Gráfica que você observou durante o curso.</span>
+        </div>
+        <textarea name="q6a" class="media"></textarea>
+        <div class="char-count" data-target="q6a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Qual a diferença entre CHEFE e LÍDER? Cite TRÊS características que, na sua visão, definem um bom líder.</span>
+        </div>
+        <textarea name="q6b" class="media"></textarea>
+        <div class="char-count" data-target="q6b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">Mesmo sem cargo de liderança formal, como uma pessoa pode EXERCER liderança no ambiente de trabalho? Dê um exemplo.</span>
+        </div>
+        <textarea name="q6c" class="media"></textarea>
+        <div class="char-count" data-target="q6c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q7 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">07</div>
+        <div class="questao-meta">
+          <div class="questao-tema">Processos e Qualidade</div>
+          <span class="questao-tipo tipo-proposta">Pesquisa / Proposta</span>
+        </div>
+      </div>
+      <p class="enunciado">Processo bom é aquele que entrega resultado mesmo quando muda a pessoa que faz. Qualidade não é luxo — é o mínimo que o cliente espera.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Explique, com suas palavras, por que PADRONIZAR processos é importante para uma empresa do tamanho da CDG.</span>
+        </div>
+        <textarea name="q7a"></textarea>
+        <div class="char-count" data-target="q7a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Cite UM processo que você já vivenciou em alguma empresa (atual ou anterior) e que, na sua opinião, precisava melhorar. Descreva como ele funcionava e quais problemas causava.</span>
+        </div>
+        <textarea name="q7b" class="media"></textarea>
+        <div class="char-count" data-target="q7b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">PROPOSTA: Descreva como esse processo PODERIA funcionar de forma melhor. Explique o passo a passo da sua proposta e que ganho ela traria para o cliente final ou para a empresa.</span>
+        </div>
+        <textarea name="q7c" class="grande"></textarea>
+        <div class="char-count" data-target="q7c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q8 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">08</div>
+        <div class="questao-meta">
+          <div class="questao-tema">Finanças</div>
+          <span class="questao-tipo tipo-conceitual">Conceitual</span>
+        </div>
+      </div>
+      <p class="enunciado">Empresa não quebra por falta de venda — quebra por falta de gestão. Todo colaborador influencia o resultado financeiro da CDG, mesmo quem nunca mexeu numa planilha.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Explique a diferença entre FATURAMENTO, LUCRO e CAIXA. Por que dá pra uma empresa vender muito e mesmo assim ter problema financeiro?</span>
+        </div>
+        <textarea name="q8a" class="media"></textarea>
+        <div class="char-count" data-target="q8a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Cite TRÊS atitudes do seu dia a dia (vida pessoal e/ou profissional) que IMPACTAM diretamente o seu resultado financeiro — para o bem ou para o mal.</span>
+        </div>
+        <textarea name="q8b" class="media"></textarea>
+        <div class="char-count" data-target="q8b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">O que é DESPERDÍCIO no contexto de uma gráfica? Dê DOIS exemplos concretos que você imagina que possam acontecer e como evitá-los.</span>
+        </div>
+        <textarea name="q8c" class="media"></textarea>
+        <div class="char-count" data-target="q8c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q9 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">09</div>
+        <div class="questao-meta">
+          <div class="questao-tema">Encantamento e Experiência do Cliente</div>
+          <span class="questao-tipo tipo-proposta">Pesquisa / Proposta</span>
+        </div>
+      </div>
+      <p class="enunciado">Cliente satisfeito volta. Cliente encantado indica. A diferença entre os dois mora nos detalhes.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Qual a diferença entre ATENDER, SATISFAZER e ENCANTAR o cliente? Explique com suas palavras.</span>
+        </div>
+        <textarea name="q9a"></textarea>
+        <div class="char-count" data-target="q9a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Conte um momento em que VOCÊ foi encantado como cliente em algum lugar (loja, restaurante, serviço). O que aquela empresa fez de diferente? Por que isso ficou marcado em você?</span>
+        </div>
+        <textarea name="q9b" class="media"></textarea>
+        <div class="char-count" data-target="q9b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">PROPOSTA: A partir dessa experiência que você viveu, sugira UMA ação concreta que a CDG poderia implementar no atendimento à escola cliente para criar um momento de encantamento. Descreva a ação, em que etapa ela aconteceria e por que ela funcionaria.</span>
+        </div>
+        <textarea name="q9c" class="grande"></textarea>
+        <div class="char-count" data-target="q9c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- Q10 -->
+    <section class="questao">
+      <div class="questao-head">
+        <div class="questao-num">10</div>
+        <div class="questao-meta">
+          <div class="questao-tema">Materiais Gráficos e Produção</div>
+          <span class="questao-tipo tipo-conceitual">Conceitual</span>
+        </div>
+      </div>
+      <p class="enunciado">Mesmo quem não está na produção precisa entender minimamente o que a gente faz — porque é isso que vendemos, é isso que entregamos e é isso que diferencia a CDG.</p>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">a)</span>
+          <span class="subitem-pergunta">Cite pelo menos QUATRO tipos de materiais gráficos que a Casa da Gráfica produz para as escolas clientes. Para cada um, explique em uma frase para que serve.</span>
+        </div>
+        <textarea name="q10a" class="grande"></textarea>
+        <div class="char-count" data-target="q10a">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">b)</span>
+          <span class="subitem-pergunta">Qual a diferença básica entre IMPRESSÃO DIGITAL e IMPRESSÃO OFFSET? Em qual situação cada uma é mais indicada?</span>
+        </div>
+        <textarea name="q10b" class="media"></textarea>
+        <div class="char-count" data-target="q10b">0 caracteres</div>
+      </div>
+
+      <div class="subitem">
+        <div class="subitem-label">
+          <span class="subitem-letra">c)</span>
+          <span class="subitem-pergunta">Explique, com suas palavras, o que pode acontecer se um arquivo chega para a produção sem SANGRIA, com BAIXA RESOLUÇÃO ou em modo de cor errado (RGB em vez de CMYK). Por que esses detalhes técnicos importam para o cliente final?</span>
+        </div>
+        <textarea name="q10c" class="media"></textarea>
+        <div class="char-count" data-target="q10c">0 caracteres</div>
+      </div>
+    </section>
+
+    <!-- ENVIO -->
+    <section class="envio">
+      <h2>Finalizou?</h2>
+      <p>Confira suas respostas e clique em <strong>"Baixar respostas em PDF"</strong>. Vai gerar um arquivo bonito e organizado que você deve <strong>enviar para o e-mail rafaelrodrigues@casadagrafica.com</strong> ou entregar diretamente ao responsável pelo programa.</p>
+      <div class="botoes">
+        <button type="button" class="btn btn-primary" onclick="baixarPDF()">📄 Baixar respostas em PDF</button>
+      </div>
+      <div class="envio-foot">Ao enviar, você confirma que respondeu individualmente, sem consulta a colegas.</div>
+    </section>
+
+  </form>
+
+  <div class="footer">
+    Escola 40+ · Avaliação Final<br>
+    <strong>Casa da Gráfica</strong>
+  </div>
+
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO -->
+<div class="modal-bg" id="modalSucesso">
+  <div class="modal">
+    <div class="modal-icon">✓</div>
+    <h2>PDF gerado!</h2>
+    <p>Seu arquivo de respostas foi baixado. Agora <strong>envie o PDF</strong> para o e-mail abaixo ou entregue diretamente ao responsável pelo programa:</p>
+    <p style="background: white; padding: 12px 16px; border-radius: 4px; font-family: var(--display); font-weight: 700; color: var(--azul); font-size: 16px; margin-bottom: 24px; word-break: break-all;">rafaelrodrigues@casadagrafica.com</p>
+    <button type="button" class="btn btn-primary" onclick="document.getElementById('modalSucesso').classList.remove('show')">Entendi</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// CONFIGURAÇÃO
+// ============================================================
+const EMAIL_DESTINO = "rafaelrodrigues@casadagrafica.com";
+// ============================================================
+
+const STORAGE_KEY = "escola40_prova_rascunho";
+const form = document.getElementById('provaForm');
+const todosCampos = form.querySelectorAll('input, textarea');
+
+// Definir data automática
+document.getElementById('data').valueAsDate = new Date();
+
+// ============ CONTADOR DE CARACTERES ============
+document.querySelectorAll('textarea').forEach(ta => {
+  const counter = document.querySelector(`.char-count[data-target="${ta.name}"]`);
+  ta.addEventListener('input', () => {
+    if (counter) counter.textContent = `${ta.value.length} caracteres`;
+  });
+});
+
+// ============ AUTO-SAVE NO LOCALSTORAGE ============
+let salvoTimer;
+function salvarRascunho() {
+  const dados = {};
+  todosCampos.forEach(campo => { dados[campo.name] = campo.value; });
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
+    mostrarSalvo();
+  } catch(e) {
+    console.warn("Não foi possível salvar rascunho:", e);
+  }
+}
+
+function mostrarSalvo() {
+  const msg = document.getElementById('salvoMsg');
+  msg.classList.add('show');
+  clearTimeout(salvoTimer);
+  salvoTimer = setTimeout(() => msg.classList.remove('show'), 1500);
+}
+
+function carregarRascunho() {
+  try {
+    const dados = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    Object.keys(dados).forEach(nome => {
+      const campo = form.querySelector(`[name="${nome}"]`);
+      if (campo && dados[nome]) {
+        campo.value = dados[nome];
+        // Trigger contador
+        if (campo.tagName === 'TEXTAREA') {
+          const counter = document.querySelector(`.char-count[data-target="${nome}"]`);
+          if (counter) counter.textContent = `${campo.value.length} caracteres`;
+        }
+      }
+    });
+  } catch(e) {
+    console.warn("Erro ao carregar rascunho:", e);
+  }
+}
+
+// Debounce no save (1.5s após parar de digitar)
+let debounceTimer;
+todosCampos.forEach(campo => {
+  campo.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(salvarRascunho, 1500);
+    atualizarProgresso();
+  });
+});
+
+// ============ BARRA DE PROGRESSO ============
+function atualizarProgresso() {
+  const total = todosCampos.length;
+  let preenchidos = 0;
+  todosCampos.forEach(c => { if (c.value.trim().length > 0) preenchidos++; });
+  const pct = Math.round((preenchidos / total) * 100);
+  document.getElementById('progressBar').style.width = pct + '%';
+  document.getElementById('progressText').textContent = `${pct}% preenchido`;
+}
+
+// ============ COLETAR DADOS ============
+function coletarDados() {
+  const dados = { timestamp: new Date().toISOString() };
+  todosCampos.forEach(c => { dados[c.name] = c.value; });
+  return dados;
+}
+
+// ============ BAIXAR EM PDF ============
+function baixarPDF() {
+  if (!validarCamposObrigatorios()) return;
+
+  // Verificar se a biblioteca carregou
+  if (typeof window.jspdf === 'undefined') {
+    alert('A ferramenta de PDF ainda está carregando. Aguarde alguns segundos e tente novamente. Se persistir, verifique sua conexão com a internet.');
+    return;
+  }
+
+  // Mostrar loading
+  const btn = event.target;
+  const textoOriginal = btn.innerHTML;
+  btn.innerHTML = '⏳ Gerando PDF...';
+  btn.disabled = true;
+
+  // Pequeno delay pra UI atualizar antes do processamento pesado
+  setTimeout(() => {
+    try {
+      gerarPDF();
+      btn.innerHTML = textoOriginal;
+      btn.disabled = false;
+    } catch (err) {
+      console.error('Erro ao gerar PDF:', err);
+      btn.innerHTML = textoOriginal;
+      btn.disabled = false;
+      alert('Houve um erro ao gerar o PDF. Tente novamente ou peça ajuda ao responsável pelo programa.\n\nDetalhe técnico: ' + err.message);
+    }
+  }, 100);
+}
+
+function gerarPDF() {
+  const dados = coletarDados();
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+  // Cores
+  const AZUL = [31, 58, 95];
+  const VERMELHO = [200, 16, 46];
+  const CINZA = [89, 89, 89];
+  const CINZA_CLARO = [180, 180, 180];
+
+  // Margens e dimensões
+  const margemEsq = 18;
+  const margemDir = 18;
+  const margemTopo = 20;
+  const margemBaixo = 20;
+  const larguraPagina = 210;
+  const alturaPagina = 297;
+  const larguraConteudo = larguraPagina - margemEsq - margemDir;
+
+  let y = margemTopo;
+  let numeroPagina = 1;
+
+  // ---------- HELPERS ----------
+  function adicionarRodape() {
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(8);
+    doc.setTextColor(...CINZA_CLARO);
+    doc.text(`Escola 40+ | Avaliação Final | Casa da Gráfica`, margemEsq, alturaPagina - 10);
+    doc.text(`Página ${numeroPagina}`, larguraPagina - margemDir, alturaPagina - 10, { align: 'right' });
+  }
+
+  function novaPagina() {
+    adicionarRodape();
+    doc.addPage();
+    numeroPagina++;
+    y = margemTopo;
+  }
+
+  function verificarEspaco(altura) {
+    if (y + altura > alturaPagina - margemBaixo) {
+      novaPagina();
+      return true;
+    }
+    return false;
+  }
+
+  // ---------- CAPA ----------
+  doc.setFillColor(...AZUL);
+  doc.rect(0, 0, larguraPagina, 60, 'F');
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(9);
+  doc.setTextColor(255, 255, 255);
+  doc.text('CASA DA GRÁFICA  •  PROGRAMA INTERNO', margemEsq, 22);
+
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(28);
+  doc.text('Escola 40+', margemEsq, 36);
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(16);
+  doc.setTextColor(242, 184, 193);
+  doc.text('Avaliação Final', margemEsq, 46);
+
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(8);
+  doc.setTextColor(255, 255, 255);
+  doc.text('"Quem entrega mais valor, ganha mais."', larguraPagina - margemDir, 53, { align: 'right' });
+
+  y = 75;
+
+  // ---------- IDENTIFICAÇÃO ----------
+  doc.setFillColor(244, 241, 234);
+  doc.rect(margemEsq, y, larguraConteudo, 42, 'F');
+
+  doc.setDrawColor(...VERMELHO);
+  doc.setLineWidth(0.8);
+  doc.line(margemEsq, y, margemEsq, y + 42);
+
+  let yIdent = y + 8;
+  const xLabel = margemEsq + 6;
+  const xValor = margemEsq + 40;
+
+  function linhaIdent(label, valor) {
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(9);
+    doc.setTextColor(...CINZA);
+    doc.text(label.toUpperCase(), xLabel, yIdent);
+
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(11);
+    doc.setTextColor(0, 0, 0);
+    doc.text(valor || '—', xValor, yIdent);
+    yIdent += 7;
+  }
+
+  linhaIdent('Nome', dados.nome);
+  linhaIdent('Setor', dados.setor);
+  linhaIdent('Cargo', dados.cargo);
+  if (dados.email) linhaIdent('E-mail', dados.email);
+  linhaIdent('Data', dados.data);
+
+  y += 52;
+
+  // ---------- TÍTULO RESPOSTAS ----------
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.setTextColor(...AZUL);
+  doc.text('RESPOSTAS', margemEsq, y);
+
+  doc.setDrawColor(...AZUL);
+  doc.setLineWidth(0.5);
+  doc.line(margemEsq, y + 2, margemEsq + 30, y + 2);
+
+  y += 12;
+
+  // ---------- QUESTÕES ----------
+  const mapaPerguntas = [
+    { id: 'q1a', q: 1, sub: 'a', tema: 'História da Casa da Gráfica', pergunta: 'Cite a Missão, a Visão e pelo menos TRÊS Valores da Casa da Gráfica, explicando com suas palavras o que cada Valor significa no dia a dia de trabalho.' },
+    { id: 'q1b', q: 1, sub: 'b', tema: 'História da Casa da Gráfica', pergunta: 'Explique, em até 5 linhas, por que dizemos que a CDG é "uma empresa de educação que entrega serviços gráficos" — e qual é a diferença prática disso em relação a uma gráfica que atende qualquer mercado.' },
+    { id: 'q1c', q: 1, sub: 'c', tema: 'História da Casa da Gráfica', pergunta: 'Quem é o cliente da CDG? Descreva o perfil dele e o que ele espera de nós.' },
+    { id: 'q2a', q: 2, sub: 'a', tema: 'Comunicação efetiva e Língua Portuguesa', pergunta: 'Explique, com suas palavras, o que é comunicação efetiva e cite TRÊS elementos que fazem uma mensagem ser realmente compreendida pelo outro.' },
+    { id: 'q2b', q: 2, sub: 'b', tema: 'Comunicação efetiva e Língua Portuguesa', pergunta: 'Reescrita do e-mail com erros de português, clareza e tom profissional.' },
+    { id: 'q2c', q: 2, sub: 'c', tema: 'Comunicação efetiva e Língua Portuguesa', pergunta: 'Cite DOIS erros de português frequentes no dia a dia de trabalho e como corrigi-los.' },
+    { id: 'q3a', q: 3, sub: 'a', tema: 'IA na Prática', pergunta: 'Com suas palavras, explique o que é um PROMPT e por que a qualidade do prompt determina a qualidade da resposta da IA.' },
+    { id: 'q3b', q: 3, sub: 'b', tema: 'IA na Prática', pergunta: 'Cite DUAS tarefas do seu dia a dia em que a IA pode te ajudar AGORA. Para cada uma, escreva um exemplo de prompt que você usaria.' },
+    { id: 'q3c', q: 3, sub: 'c', tema: 'IA na Prática', pergunta: 'PROPOSTA: argumento para convencer um colega resistente a usar IA.' },
+    { id: 'q4a', q: 4, sub: 'a', tema: 'Marketing e Vendas', pergunta: 'Qual a diferença entre MARKETING e VENDAS? Explique com suas palavras.' },
+    { id: 'q4b', q: 4, sub: 'b', tema: 'Marketing e Vendas', pergunta: 'Cite TRÊS atitudes que você implementaria na CDG, independente do setor, visando aumentar as vendas.' },
+    { id: 'q4c', q: 4, sub: 'c', tema: 'Marketing e Vendas', pergunta: 'O que é PROPOSTA DE VALOR? Qual é, na sua visão, a proposta de valor da CDG para a escola cliente?' },
+    { id: 'q5a', q: 5, sub: 'a', tema: 'Metodologia DISC', pergunta: 'O que significa cada uma das letras D, I, S e C? Descreva em uma frase a característica de cada perfil.' },
+    { id: 'q5b', q: 5, sub: 'b', tema: 'Metodologia DISC', pergunta: 'Qual perfil DISC você reconhece em VOCÊ MESMO como predominante? Cite DOIS pontos fortes e UM ponto de atenção.' },
+    { id: 'q5c', q: 5, sub: 'c', tema: 'Metodologia DISC', pergunta: 'Descreva uma situação real de relacionamento em que entender o DISC do outro teria evitado um ruído. O que faria diferente hoje?' },
+    { id: 'q6a', q: 6, sub: 'a', tema: 'Cultura e Liderança', pergunta: 'Explique o que é CULTURA ORGANIZACIONAL e dê DOIS exemplos da cultura da CDG observados no curso.' },
+    { id: 'q6b', q: 6, sub: 'b', tema: 'Cultura e Liderança', pergunta: 'Qual a diferença entre CHEFE e LÍDER? Cite TRÊS características de um bom líder.' },
+    { id: 'q6c', q: 6, sub: 'c', tema: 'Cultura e Liderança', pergunta: 'Como exercer liderança no ambiente de trabalho sem cargo formal? Dê um exemplo.' },
+    { id: 'q7a', q: 7, sub: 'a', tema: 'Processos e Qualidade', pergunta: 'Por que padronizar processos é importante para uma empresa do tamanho da CDG.' },
+    { id: 'q7b', q: 7, sub: 'b', tema: 'Processos e Qualidade', pergunta: 'Cite UM processo vivenciado em alguma empresa que precisava melhorar. Como funcionava e que problemas causava.' },
+    { id: 'q7c', q: 7, sub: 'c', tema: 'Processos e Qualidade', pergunta: 'PROPOSTA: como esse processo PODERIA funcionar melhor. Passo a passo e ganho gerado.' },
+    { id: 'q8a', q: 8, sub: 'a', tema: 'Finanças', pergunta: 'Diferença entre FATURAMENTO, LUCRO e CAIXA. Por que vender muito não garante saúde financeira?' },
+    { id: 'q8b', q: 8, sub: 'b', tema: 'Finanças', pergunta: 'Cite TRÊS atitudes do dia a dia (pessoal/profissional) que impactam seu resultado financeiro.' },
+    { id: 'q8c', q: 8, sub: 'c', tema: 'Finanças', pergunta: 'O que é DESPERDÍCIO numa gráfica? Dê DOIS exemplos que você imagina e como evitá-los.' },
+    { id: 'q9a', q: 9, sub: 'a', tema: 'Encantamento e Experiência do Cliente', pergunta: 'Diferença entre ATENDER, SATISFAZER e ENCANTAR o cliente.' },
+    { id: 'q9b', q: 9, sub: 'b', tema: 'Encantamento e Experiência do Cliente', pergunta: 'Conte um momento em que VOCÊ foi encantado como cliente. O que ficou marcado?' },
+    { id: 'q9c', q: 9, sub: 'c', tema: 'Encantamento e Experiência do Cliente', pergunta: 'PROPOSTA: uma ação concreta de encantamento para a CDG inspirada na sua experiência.' },
+    { id: 'q10a', q: 10, sub: 'a', tema: 'Materiais Gráficos e Produção', pergunta: 'Cite pelo menos QUATRO tipos de materiais gráficos que a CDG produz. Para cada um, explique para que serve.' },
+    { id: 'q10b', q: 10, sub: 'b', tema: 'Materiais Gráficos e Produção', pergunta: 'Diferença entre IMPRESSÃO DIGITAL e OFFSET. Quando cada uma é indicada?' },
+    { id: 'q10c', q: 10, sub: 'c', tema: 'Materiais Gráficos e Produção', pergunta: 'Sangria, baixa resolução e modo de cor errado: o que pode acontecer? Por que importa?' }
+  ];
+
+  let ultimaQuestao = 0;
+
+  mapaPerguntas.forEach(item => {
+    if (item.q !== ultimaQuestao) {
+      verificarEspaco(20);
+      if (ultimaQuestao !== 0) y += 4;
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(22);
+      doc.setTextColor(...AZUL);
+      const numStr = String(item.q).padStart(2, '0');
+      doc.text(numStr, margemEsq, y);
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(12);
+      doc.setTextColor(0, 0, 0);
+      doc.text(item.tema.toUpperCase(), margemEsq + 14, y - 2);
+
+      doc.setDrawColor(...AZUL);
+      doc.setLineWidth(0.3);
+      doc.line(margemEsq + 14, y + 1, larguraPagina - margemDir, y + 1);
+
+      y += 10;
+      ultimaQuestao = item.q;
+    }
+
+    verificarEspaco(8);
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(...VERMELHO);
+    doc.text(`${item.sub})`, margemEsq, y);
+
+    doc.setFont('helvetica', 'italic');
+    doc.setFontSize(9);
+    doc.setTextColor(...CINZA);
+    const perguntaLinhas = doc.splitTextToSize(item.pergunta, larguraConteudo - 8);
+    perguntaLinhas.forEach(linha => {
+      verificarEspaco(4);
+      doc.text(linha, margemEsq + 6, y);
+      y += 4;
+    });
+    y += 2;
+
+    const resposta = dados[item.id] || '(não respondeu)';
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(10);
+    doc.setTextColor(20, 20, 20);
+    const respostaLinhas = doc.splitTextToSize(resposta, larguraConteudo - 8);
+    respostaLinhas.forEach(linha => {
+      verificarEspaco(5);
+      doc.text(linha, margemEsq + 6, y);
+      y += 5;
+    });
+
+    y += 6;
+  });
+
+  adicionarRodape();
+
+  // ---------- DOWNLOAD COM DETECÇÃO MOBILE ----------
+  const nomeArquivo = (dados.nome || 'sem_nome')
+    .replace(/[^a-z0-9\s]/gi, '')
+    .replace(/\s+/g, '_')
+    .toLowerCase();
+  const nomeCompleto = `Escola40_Avaliacao_${nomeArquivo}.pdf`;
+
+  // Detectar se é dispositivo móvel
+  const ehMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  const ehIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  if (ehIOS) {
+    // iOS: abre o PDF em data URI numa nova aba — usuário usa o botão "Compartilhar" do Safari
+    const pdfDataUri = doc.output('datauristring', { filename: nomeCompleto });
+    const novaJanela = window.open();
+    if (novaJanela) {
+      novaJanela.document.write(`
+        <html>
+        <head>
+          <title>${nomeCompleto}</title>
+          <style>
+            body { margin: 0; font-family: -apple-system, sans-serif; background: #1F3A5F; color: white; text-align: center; padding: 20px; }
+            .aviso { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+            h2 { margin: 0 0 12px; }
+            p { margin: 8px 0; line-height: 1.5; }
+            iframe { width: 100%; height: 80vh; border: 0; background: white; border-radius: 4px; }
+            strong { color: #F2B8C1; }
+          </style>
+        </head>
+        <body>
+          <div class="aviso">
+            <h2>📄 Seu PDF está pronto</h2>
+            <p>Toque no botão <strong>Compartilhar</strong> do Safari (quadrado com seta pra cima) e envie por e-mail ou WhatsApp para:</p>
+            <p><strong>rafaelrodrigues@casadagrafica.com</strong></p>
+          </div>
+          <iframe src="${pdfDataUri}"></iframe>
+        </body>
+        </html>
+      `);
+      novaJanela.document.close();
+    } else {
+      // Bloqueado popup — fallback pra abrir direto
+      window.location.href = pdfDataUri;
+    }
+    document.getElementById('modalSucesso').classList.add('show');
+  } else if (ehMobile) {
+    // Android e outros: tentar save normal, depois abrir como blob como fallback
+    try {
+      doc.save(nomeCompleto);
+      document.getElementById('modalSucesso').classList.add('show');
+    } catch (e) {
+      // Fallback Android: blob URL
+      const pdfBlob = doc.output('blob');
+      const url = URL.createObjectURL(pdfBlob);
+      window.open(url, '_blank');
+      document.getElementById('modalSucesso').classList.add('show');
+    }
+  } else {
+    // Desktop: comportamento normal
+    doc.save(nomeCompleto);
+    document.getElementById('modalSucesso').classList.add('show');
+  }
+}
+
+// ============ VALIDAÇÃO ============
+function validarCamposObrigatorios() {
+  const obrigatorios = ['nome', 'setor', 'cargo', 'data'];
+  for (let nome of obrigatorios) {
+    const campo = form.querySelector(`[name="${nome}"]`);
+    if (!campo.value.trim()) {
+      alert(`Preencha o campo "${nome}" antes de enviar.`);
+      campo.focus();
+      campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return false;
+    }
+  }
+  return true;
+}
+
+// ============ INICIALIZAÇÃO ============
+window.addEventListener('load', () => {
+  carregarRascunho();
+  atualizarProgresso();
+});
+
+// Salvar antes de sair
+window.addEventListener('beforeunload', salvarRascunho);
+</script>
+
+</body>
+</html>
