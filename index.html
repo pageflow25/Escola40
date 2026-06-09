@@ -1,1485 +1,509 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Escola 40+ — Pesquisa de Satisfação | Casa da Gráfica</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
-:root {
-  --azul: #1F3A5F;
-  --azul-claro: #2E5A8A;
-  --vermelho: #C8102E;
-  --bege: #FAF7F2;
-  --bege-escuro: #F0EAE0;
-  --cinza: #595959;
-  --cinza-claro: #8A8A8A;
-  --borda: #E5DFD3;
-  --verde: #2D7A4F;
-  --laranja: #F59E0B;
-  --display: 'Fraunces', Georgia, serif;
-  --body: 'Inter', -apple-system, sans-serif;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-
-body {
-  font-family: var(--body);
-  background: var(--bege);
-  color: #1a1a1a;
-  line-height: 1.6;
-  font-size: 16px;
-  min-height: 100vh;
-  background-image:
-    radial-gradient(circle at 20% 0%, rgba(31, 58, 95, 0.04) 0%, transparent 50%),
-    radial-gradient(circle at 80% 100%, rgba(200, 16, 46, 0.03) 0%, transparent 50%);
-}
-
-.wrap { max-width: 880px; margin: 0 auto; padding: 40px 24px 80px; }
-
-/* ============ CAPA ============ */
-.hero {
-  background: var(--azul);
-  color: white;
-  padding: 56px 48px;
-  border-radius: 4px;
-  margin-bottom: 32px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 20px 60px -20px rgba(31, 58, 95, 0.4);
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -10%;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(200, 16, 46, 0.15) 0%, transparent 70%);
-  pointer-events: none;
-}
-.hero-tag {
-  font-family: var(--body);
-  font-size: 11px;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.6);
-  margin-bottom: 16px;
-  font-weight: 500;
-}
-.hero h1 {
-  font-family: var(--display);
-  font-weight: 900;
-  font-size: clamp(36px, 6vw, 58px);
-  line-height: 0.95;
-  letter-spacing: -0.02em;
-  margin-bottom: 12px;
-}
-.hero h1 em {
-  font-style: italic;
-  font-weight: 500;
-  color: #F2B8C1;
-  display: block;
-}
-.hero-sub {
-  font-size: 17px;
-  color: rgba(255,255,255,0.8);
-  max-width: 580px;
-  margin-top: 16px;
-  font-weight: 400;
-}
-.hero-decor {
-  position: absolute;
-  bottom: 24px;
-  right: 32px;
-  font-family: var(--display);
-  font-style: italic;
-  font-size: 13px;
-  color: rgba(255,255,255,0.35);
-  letter-spacing: 0.05em;
-}
-
-/* ============ INTRO ============ */
-.intro, .bloco-id, .secao {
-  background: white;
-  border: 1px solid var(--borda);
-  border-radius: 4px;
-  padding: 32px 36px;
-  margin-bottom: 32px;
-}
-
-.intro h2, .bloco-id h2, .secao h2 {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 22px;
-  color: var(--azul);
-  margin-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.intro h2::before, .bloco-id h2::before, .secao h2::before {
-  content: '';
-  width: 32px;
-  height: 2px;
-  background: var(--vermelho);
-}
-
-.intro ul { list-style: none; }
-.intro li {
-  padding: 8px 0 8px 28px;
-  position: relative;
-  font-size: 15px;
-  color: #2a2a2a;
-}
-.intro li::before {
-  content: '→';
-  position: absolute;
-  left: 0;
-  color: var(--vermelho);
-  font-weight: 700;
-}
-.intro li strong { color: var(--azul); font-weight: 600; }
-
-/* ============ IDENTIFICAÇÃO ============ */
-.grid-id {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
-}
-.grid-id .full { grid-column: 1 / -1; }
-
-label {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--cinza);
-  margin-bottom: 8px;
-}
-
-input[type="text"], input[type="email"], input[type="date"], textarea, select {
-  width: 100%;
-  border: 1px solid var(--borda);
-  background: var(--bege);
-  padding: 12px 16px;
-  font-family: var(--body);
-  font-size: 15px;
-  color: #1a1a1a;
-  border-radius: 3px;
-  transition: all 0.2s;
-  resize: vertical;
-}
-
-input:focus, textarea:focus, select:focus {
-  outline: none;
-  border-color: var(--azul);
-  background: white;
-  box-shadow: 0 0 0 3px rgba(31, 58, 95, 0.1);
-}
-
-textarea { min-height: 80px; line-height: 1.6; font-family: var(--body); }
-
-/* ============ AVALIAÇÃO GERAL DO CURSO ============ */
-.curso-geral {
-  background: linear-gradient(135deg, #1F3A5F 0%, #2E5A8A 100%);
-  color: white;
-  padding: 40px 36px;
-  border-radius: 4px;
-  margin-bottom: 32px;
-  position: relative;
-  overflow: hidden;
-}
-
-.curso-geral::after {
-  content: '';
-  position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 200px;
-  height: 200px;
-  background: radial-gradient(circle, rgba(200, 16, 46, 0.2) 0%, transparent 70%);
-}
-
-.curso-geral h2 {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 26px;
-  margin-bottom: 8px;
-  position: relative;
-}
-
-.curso-geral .subtitulo {
-  font-size: 14px;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 24px;
-  position: relative;
-}
-
-/* ============ AULAS ============ */
-.aula {
-  border-bottom: 1px solid var(--bege-escuro);
-  padding: 24px 0;
-}
-
-.aula:first-of-type { padding-top: 0; }
-.aula:last-of-type { border-bottom: none; padding-bottom: 0; }
-
-.aula-head {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  margin-bottom: 16px;
-  flex-wrap: wrap;
-}
-
-.aula-num {
-  font-family: var(--display);
-  font-weight: 900;
-  font-size: 32px;
-  color: var(--azul);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  flex-shrink: 0;
-}
-
-.aula-info { flex: 1; min-width: 200px; }
-
-.aula-titulo {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: 18px;
-  color: #1a1a1a;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.aula-instrutor {
-  font-size: 13px;
-  color: var(--cinza);
-  margin-top: 2px;
-  font-style: italic;
-}
-
-/* ============ ESCALA 1-10 ============ */
-.escala {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 8px;
-}
-
-.escala-btn {
-  flex: 1;
-  min-width: 36px;
-  max-width: 56px;
-  height: 44px;
-  border: 1.5px solid var(--borda);
-  background: var(--bege);
-  color: var(--cinza);
-  font-family: var(--body);
-  font-size: 15px;
-  font-weight: 600;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.escala-btn:hover {
-  border-color: var(--azul);
-  background: white;
-}
-
-.escala-btn.ativo {
-  background: var(--azul);
-  border-color: var(--azul);
-  color: white;
-  font-weight: 700;
-  box-shadow: 0 4px 12px -4px rgba(31, 58, 95, 0.4);
-  transform: scale(1.08);
-}
-
-/* Cores por nota - feedback visual */
-.escala-btn.ativo[data-nota="1"],
-.escala-btn.ativo[data-nota="2"],
-.escala-btn.ativo[data-nota="3"] {
-  background: #DC2626;
-  border-color: #DC2626;
-  box-shadow: 0 4px 12px -4px rgba(220, 38, 38, 0.4);
-}
-
-.escala-btn.ativo[data-nota="4"],
-.escala-btn.ativo[data-nota="5"],
-.escala-btn.ativo[data-nota="6"] {
-  background: var(--laranja);
-  border-color: var(--laranja);
-  box-shadow: 0 4px 12px -4px rgba(245, 158, 11, 0.4);
-}
-
-.escala-btn.ativo[data-nota="7"],
-.escala-btn.ativo[data-nota="8"] {
-  background: var(--azul);
-  border-color: var(--azul);
-}
-
-.escala-btn.ativo[data-nota="9"],
-.escala-btn.ativo[data-nota="10"] {
-  background: var(--verde);
-  border-color: var(--verde);
-  box-shadow: 0 4px 12px -4px rgba(45, 122, 79, 0.4);
-}
-
-/* Escala em fundo escuro (avaliação geral) */
-.curso-geral .escala-btn {
-  background: rgba(255,255,255,0.1);
-  border-color: rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.8);
-  height: 52px;
-  font-size: 17px;
-}
-
-.curso-geral .escala-btn:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: white;
-}
-
-.escala-legenda {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 6px;
-  font-size: 11px;
-  color: var(--cinza-claro);
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.curso-geral .escala-legenda {
-  color: rgba(255,255,255,0.5);
-}
-
-.aula-comentario {
-  margin-top: 12px;
-}
-
-.aula-comentario textarea {
-  min-height: 60px;
-  font-size: 14px;
-}
-
-.aula-comentario label {
-  font-size: 11px;
-  margin-bottom: 6px;
-}
-
-/* ============ NPS ============ */
-.nps-escala {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.nps-btn {
-  flex: 1;
-  min-width: 32px;
-  max-width: 52px;
-  height: 44px;
-  border: 1.5px solid var(--borda);
-  background: var(--bege);
-  color: var(--cinza);
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.nps-btn.ativo[data-nota="0"],
-.nps-btn.ativo[data-nota="1"],
-.nps-btn.ativo[data-nota="2"],
-.nps-btn.ativo[data-nota="3"],
-.nps-btn.ativo[data-nota="4"],
-.nps-btn.ativo[data-nota="5"],
-.nps-btn.ativo[data-nota="6"] {
-  background: #DC2626;
-  border-color: #DC2626;
-  color: white;
-  transform: scale(1.08);
-}
-
-.nps-btn.ativo[data-nota="7"],
-.nps-btn.ativo[data-nota="8"] {
-  background: var(--laranja);
-  border-color: var(--laranja);
-  color: white;
-  transform: scale(1.08);
-}
-
-.nps-btn.ativo[data-nota="9"],
-.nps-btn.ativo[data-nota="10"] {
-  background: var(--verde);
-  border-color: var(--verde);
-  color: white;
-  transform: scale(1.08);
-}
-
-/* ============ BARRA DE PROGRESSO ============ */
-.progress-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--azul), var(--vermelho));
-  width: 0%;
-  z-index: 100;
-  transition: width 0.3s;
-}
-
-.progress-info {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: var(--azul);
-  color: white;
-  padding: 10px 16px;
-  border-radius: 30px;
-  font-size: 13px;
-  font-weight: 500;
-  box-shadow: 0 8px 24px -8px rgba(31, 58, 95, 0.5);
-  z-index: 99;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.progress-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #4ade80;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
-}
-
-.aviso-pendentes {
-  position: fixed;
-  bottom: 70px;
-  right: 24px;
-  background: var(--laranja);
-  color: white;
-  padding: 10px 16px;
-  border-radius: 30px;
-  font-size: 12px;
-  font-weight: 600;
-  box-shadow: 0 8px 24px -8px rgba(245, 158, 11, 0.5);
-  z-index: 99;
-  display: none;
-  align-items: center;
-  gap: 6px;
-  max-width: 280px;
-}
-
-.aviso-pendentes.show { display: flex; }
-.aviso-pendentes.completo {
-  background: var(--verde);
-  display: flex;
-}
-
-.salvo-msg {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(-100px);
-  background: var(--verde);
-  color: white;
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 14px;
-  font-weight: 500;
-  box-shadow: 0 8px 24px -8px rgba(45, 122, 79, 0.5);
-  z-index: 200;
-  transition: transform 0.4s;
-}
-
-.salvo-msg.show { transform: translateX(-50%) translateY(0); }
-
-/* ============ ENVIO ============ */
-.envio {
-  background: var(--azul);
-  color: white;
-  padding: 48px 40px;
-  border-radius: 4px;
-  margin-top: 40px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.envio::before {
-  content: '';
-  position: absolute;
-  top: -30%;
-  left: -10%;
-  width: 300px;
-  height: 300px;
-  background: radial-gradient(circle, rgba(200, 16, 46, 0.2) 0%, transparent 70%);
-}
-
-.envio h2 {
-  font-family: var(--display);
-  font-weight: 900;
-  font-size: 36px;
-  margin-bottom: 12px;
-  letter-spacing: -0.02em;
-  position: relative;
-}
-
-.envio p {
-  color: rgba(255,255,255,0.75);
-  margin-bottom: 32px;
-  font-size: 15px;
-  position: relative;
-}
-
-.botoes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
-  position: relative;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  padding: 16px 24px;
-  font-family: var(--body);
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  border: none;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.btn-primary { background: var(--vermelho); color: white; }
-.btn-primary:hover {
-  background: #a30d24;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px -8px rgba(200, 16, 46, 0.5);
-}
-
-.envio-foot {
-  margin-top: 32px;
-  padding-top: 24px;
-  border-top: 1px solid rgba(255,255,255,0.15);
-  font-size: 12px;
-  color: rgba(255,255,255,0.5);
-  font-style: italic;
-  font-family: var(--display);
-  position: relative;
-}
-
-/* ============ FOOTER ============ */
-.footer {
-  text-align: center;
-  margin-top: 48px;
-  padding-top: 32px;
-  border-top: 1px solid var(--borda);
-  font-size: 12px;
-  color: var(--cinza-claro);
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
-.footer strong {
-  color: var(--azul);
-  font-family: var(--display);
-  font-style: italic;
-  text-transform: none;
-  letter-spacing: 0;
-  font-size: 14px;
-  display: block;
-  margin-top: 4px;
-  font-weight: 700;
-}
-
-/* ============ MODAL ============ */
-.modal-bg {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  backdrop-filter: blur(4px);
-  z-index: 1000;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-}
-
-.modal-bg.show { display: flex; }
-
-.modal {
-  background: var(--bege);
-  border-radius: 6px;
-  padding: 48px 40px;
-  max-width: 480px;
-  text-align: center;
-  animation: slideUp 0.4s;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.modal-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  background: var(--verde);
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 24px;
-  font-size: 32px;
-  font-weight: 700;
-}
-
-.modal h2 {
-  font-family: var(--display);
-  font-weight: 900;
-  font-size: 32px;
-  color: var(--azul);
-  margin-bottom: 12px;
-  letter-spacing: -0.02em;
-}
-
-.modal p {
-  color: var(--cinza);
-  margin-bottom: 24px;
-  font-size: 15px;
-}
-
-/* ============ MOBILE ============ */
-@media (max-width: 640px) {
-  .wrap { padding: 20px 16px 60px; }
-  .hero { padding: 36px 24px; }
-  .intro, .bloco-id, .secao, .curso-geral { padding: 28px 20px; }
-  .grid-id { grid-template-columns: 1fr; }
-  .aula-num { font-size: 26px; }
-  .aula-titulo { font-size: 16px; }
-  .escala-btn { min-width: 32px; height: 42px; font-size: 14px; }
-  .curso-geral .escala-btn { height: 48px; font-size: 16px; }
-  .nps-btn { min-width: 28px; height: 40px; font-size: 13px; }
-  .envio h2 { font-size: 28px; }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Demandas | TI</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-main: #f4f7fb;
+            --bg-surface: #ffffff;
+            --ink-strong: #0f172a;
+            --ink-soft: #475569;
+            --line: #dbe3ee;
+            --brand: #0b3b67;
+            --brand-hover: #0a3258;
+            --brand-soft: #e6eff9;
+            --ok: #047857;
+            --warn: #b45309;
+            --danger: #b91c1c;
+        }
+
+        body {
+            font-family: 'Manrope', sans-serif;
+            background:
+                radial-gradient(circle at 10% 20%, #dbeafe 0%, transparent 35%),
+                radial-gradient(circle at 90% 10%, #fde68a 0%, transparent 25%),
+                var(--bg-main);
+        }
+
+        .loader {
+            border: 3px solid #cdd8e7;
+            border-top: 3px solid #ffffff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+
+        .form-shell {
+            animation: fadeInUp .45s ease;
+        }
+
+        .field-hint {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-top: 0.3rem;
+        }
+
+        .invalid {
+            border-color: var(--danger) !important;
+            box-shadow: 0 0 0 3px rgba(185, 28, 28, 0.12) !important;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-<body>
+<body class="min-h-screen flex items-center justify-center p-4 text-slate-800">
 
-<div class="progress-bar" id="progressBar"></div>
-<div class="progress-info">
-  <span class="progress-dot"></span>
-  <span id="progressText">0% preenchido</span>
-</div>
-<div class="aviso-pendentes" id="avisoPendentes"></div>
-<div class="salvo-msg" id="salvoMsg">✓ Rascunho salvo automaticamente</div>
+    <div class="form-shell w-full max-w-5xl bg-[var(--bg-surface)] rounded-3xl shadow-2xl overflow-hidden border border-[var(--line)]">
+        
+        <div class="bg-[var(--brand)] p-8 md:p-10 text-center sm:text-left">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <p class="text-[var(--brand-soft)] text-xs uppercase tracking-[0.18em] font-semibold">Central de Atendimento Interno</p>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight mt-2">Abertura de Chamado - TI</h1>
+                    <p class="text-slate-200 mt-2 text-sm max-w-2xl">Preencha os dados com clareza para acelerar triagem, priorizacao e execucao. O chamado sera criado no Trello com metadados tecnicos.</p>
+                </div>
 
-<div class="wrap">
-
-  <!-- CAPA -->
-  <header class="hero">
-    <div class="hero-tag">Casa da Gráfica • Escola 40+</div>
-    <h1>Pesquisa de<em>Satisfação</em></h1>
-    <p class="hero-sub">Sua opinião é essencial para que a próxima turma seja ainda melhor. Avalie o curso como um todo e cada uma das 17 aulas. Leva uns 10 minutos.</p>
-    <div class="hero-decor">"Quem ouve, melhora."</div>
-  </header>
-
-  <!-- INSTRUÇÕES -->
-  <section class="intro">
-    <h2>Como funciona</h2>
-    <ul>
-      <li>Para cada aula, dê uma nota de <strong>1 a 10</strong>: 1 = muito insatisfeito, 10 = muito satisfeito.</li>
-      <li>Os <strong>comentários são opcionais</strong> — fique à vontade pra escrever só quando achar relevante.</li>
-      <li>Suas respostas são salvas automaticamente. Se fechar e voltar depois (no mesmo navegador), continua de onde parou.</li>
-      <li>Ao final, você vai <strong>baixar suas respostas em PDF</strong> e enviar para <strong>rafaelrodrigues@casadagrafica.com</strong>.</li>
-      <li>Seja sincero. Crítica construtiva vale mais que elogio educado.</li>
-    </ul>
-  </section>
-
-  <form id="pesquisaForm">
-
-    <!-- IDENTIFICAÇÃO -->
-    <section class="bloco-id">
-      <h2>Identificação</h2>
-      <div class="grid-id">
-        <div class="full">
-          <label for="nome">Nome completo</label>
-          <input type="text" id="nome" name="nome" required>
+            </div>
         </div>
-        <div>
-          <label for="setor">Setor</label>
-          <input type="text" id="setor" name="setor" required>
+
+        <div class="p-8 md:p-10">
+            <form id="ticketForm" class="space-y-8" novalidate>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <label for="solicitante" class="block text-sm font-semibold text-slate-700 mb-1">Nome do Solicitante <span class="text-red-600">*</span></label>
+                        <input type="text" id="solicitante" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all placeholder-slate-400" placeholder="Ex: Joao Silva">
+                    </div>
+                    <div>
+                        <label for="setor" class="block text-sm font-semibold text-slate-700 mb-1">Setor/Departamento <span class="text-red-600">*</span></label>
+                        <input type="text" id="setor" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all placeholder-slate-400" placeholder="Ex: Financeiro">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-semibold text-slate-700 mb-1">E-mail Corporativo <span class="text-red-600">*</span></label>
+                        <input type="email" id="email" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all placeholder-slate-400" placeholder="nome@empresa.com.br">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="titulo" class="block text-sm font-semibold text-slate-700 mb-1">Titulo da Demanda <span class="text-red-600">*</span></label>
+                    <input type="text" id="titulo" required minlength="8" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all placeholder-slate-400" placeholder="Ex: Erro ao gerar relatorio de vendas">
+                    <p class="field-hint">Minimo de 8 caracteres. O titulo sera prefixado automaticamente com o setor.</p>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <label for="prioridade" class="block text-sm font-semibold text-slate-700 mb-1">Prioridade <span class="text-red-600">*</span></label>
+                        <select id="prioridade" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all bg-white">
+                            <option value="" disabled selected>Selecione o nível...</option>
+                            <option value="Baixa">Baixa (pode esperar)</option>
+                            <option value="Media">Media (incomoda, mas tem contorno)</option>
+                            <option value="Alta">Alta (impacta rotina)</option>
+                            <option value="Urgente">Urgente (sistema parado)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="categoria" class="block text-sm font-semibold text-slate-700 mb-1">Categoria <span class="text-red-600">*</span></label>
+                        <select id="categoria" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all bg-white">
+                            <option value="" disabled selected>Selecione a categoria...</option>
+                            <option value="Incidente">Incidente</option>
+                            <option value="Solicitacao">Solicitacao</option>
+                            <option value="Melhoria">Melhoria</option>
+                            <option value="Acesso">Acesso</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="impacto" class="block text-sm font-semibold text-slate-700 mb-1">Impacto <span class="text-red-600">*</span></label>
+                        <select id="impacto" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all bg-white">
+                            <option value="" disabled selected>Selecione o impacto...</option>
+                            <option value="Usuario">Afeta um usuario</option>
+                            <option value="Departamento">Afeta um departamento</option>
+                            <option value="Empresa">Afeta a empresa toda</option>                            
+                            <option value="Usuario">Afeta o usuario</option>
+                            <option value="Sistema">Afeta o Sistema</option>
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div>
+                        <label for="data_entrega" class="block text-sm font-semibold text-slate-700 mb-1">Data Desejada para Entrega</label>
+                        <input type="date" id="data_entrega" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all">
+                    </div>
+                    <div>
+                        <label for="ambiente" class="block text-sm font-semibold text-slate-700 mb-1">Ambiente <span class="text-red-600">*</span></label>
+                        <select id="ambiente" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all bg-white">
+                            <option value="" disabled selected>Selecione o ambiente...</option>
+                            <option value="Producao">Producao</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="responsavel" class="block text-sm font-semibold text-slate-700 mb-1">Responsavel TI</label>
+                        <select id="responsavel" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all bg-white">
+                            <option value="" selected>Sem atribuicao inicial</option>
+                            <option value="analista_1">PAGEFLOW</option>
+                            <option value="analista_2">DESKFLOW</option>
+                            <option value="infra">DASHFLOW</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="descricao" class="block text-sm font-semibold text-slate-700 mb-1">Descricao Detalhada <span class="text-red-600">*</span></label>
+                    <textarea id="descricao" required minlength="20" rows="5" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all placeholder-slate-400" placeholder="Descreva o que precisa, erro observado, comportamento esperado e passo a passo para reproduzir."></textarea>
+                    <p class="field-hint">Minimo de 20 caracteres. Quanto mais detalhes, mais rapida a resolucao.</p>
+                </div>
+
+                <div>
+                    <label for="anexo" class="block text-sm font-semibold text-slate-700 mb-1">Anexo (Opcional - prints, planilhas, PDF)</label>
+                    <input type="file" id="anexo" class="w-full text-slate-500 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100 transition-all border border-slate-300 rounded-xl bg-white cursor-pointer">
+                    <p class="field-hint">Tamanho maximo: 10 MB. Formatos: PNG, JPG, JPEG, PDF, XLS, XLSX, CSV, DOC, DOCX, TXT.</p>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5">
+                    <h2 class="font-bold text-slate-800">Automacoes Trello</h2>
+                    <p class="text-sm text-slate-600 mt-1">Ao enviar, o sistema pode aplicar label por prioridade, atribuir responsavel, criar checklist inicial e adicionar comentario tecnico.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-4">
+                        <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                            <input id="optChecklist" type="checkbox" checked class="rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+                            Criar checklist
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                            <input id="optComment" type="checkbox" checked class="rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+                            Adicionar comentario tecnico
+                        </label>
+                        <label class="flex items-center gap-2 text-sm text-slate-700 cursor-pointer">
+                            <input id="optTop" type="checkbox" checked class="rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+                            Criar no topo da lista
+                        </label>
+                    </div>
+                </div>
+
+                <label class="flex items-start gap-3 text-sm text-slate-700 cursor-pointer">
+                    <input id="aceite" type="checkbox" required class="mt-1 rounded border-slate-300 text-sky-600 focus:ring-sky-500">
+                    Confirmo que as informacoes estao corretas e autorizo a abertura do chamado no Trello.
+                </label>
+
+                <div class="pt-4 border-t border-slate-100">
+                    <button type="submit" id="submitBtn" class="w-full sm:w-auto px-8 py-3 bg-[var(--brand)] hover:bg-[var(--brand-hover)] text-white font-semibold rounded-xl transition-colors flex items-center justify-center gap-2">
+                        <span id="btnText">Enviar Solicitação</span>
+                        <div id="btnLoader" class="loader"></div>
+                    </button>
+                </div>
+            </form>
         </div>
-        <div>
-          <label for="cargo">Cargo</label>
-          <input type="text" id="cargo" name="cargo" required>
-        </div>
-        <div class="full">
-          <label for="data">Data</label>
-          <input type="date" id="data" name="data" required>
-        </div>
-      </div>
-    </section>
-
-    <!-- AVALIAÇÃO GERAL DO CURSO -->
-    <section class="curso-geral">
-      <h2>Avaliação Geral do Curso</h2>
-      <p class="subtitulo">Considerando tudo: conteúdo, instrutores, materiais, organização — que nota você dá para a Escola 40+ como um todo?</p>
-      <div class="escala" data-campo="curso_geral"></div>
-      <div class="escala-legenda">
-        <span>Muito insatisfeito</span>
-        <span>Muito satisfeito</span>
-      </div>
-    </section>
-
-    <!-- AULAS -->
-    <section class="secao">
-      <h2>Avaliação por Aula</h2>
-      <div id="aulas-container"></div>
-    </section>
-
-    <!-- NPS -->
-    <section class="secao">
-      <h2>Você recomendaria a Escola 40+?</h2>
-      <p style="font-size: 14px; color: var(--cinza); margin-bottom: 20px;">De 0 a 10, o quanto você recomendaria este curso para um amigo ou colega?</p>
-      <div class="nps-escala" data-campo="nps"></div>
-      <div class="escala-legenda" style="max-width: 100%;">
-        <span>Não recomendaria</span>
-        <span>Recomendaria com certeza</span>
-      </div>
-    </section>
-
-    <!-- MELHOR AULA -->
-    <section class="secao">
-      <h2>Qual foi a aula que mais marcou você? Por quê?</h2>
-      <textarea name="melhor_aula" placeholder="Pode citar uma ou mais aulas. Conte por que ficou marcada — pelo conteúdo, pelo instrutor, pelo aprendizado..."></textarea>
-    </section>
-
-    <!-- SUGESTÕES -->
-    <section class="secao">
-      <h2>O que você sugere para melhorar a próxima edição?</h2>
-      <textarea name="sugestoes" placeholder="Críticas, ideias, temas que faltaram, formato, duração, materiais, dinâmica... tudo é bem-vindo." style="min-height: 120px;"></textarea>
-    </section>
-
-    <!-- ENVIO -->
-    <section class="envio">
-      <h2>Finalizou?</h2>
-      <p>Clique abaixo para gerar o PDF com todas as suas respostas e enviar para <strong>rafaelrodrigues@casadagrafica.com</strong>.</p>
-      <div class="botoes">
-        <button type="button" class="btn btn-primary" onclick="baixarPDF()">📄 Baixar respostas em PDF</button>
-      </div>
-      <div class="envio-foot">Obrigado pelo cuidado e dedicação ao longo da Escola 40+.</div>
-    </section>
-
-  </form>
-
-  <div class="footer">
-    Escola 40+ · Pesquisa de Satisfação<br>
-    <strong>Casa da Gráfica</strong>
-  </div>
-
-</div>
-
-<!-- MODAL -->
-<div class="modal-bg" id="modalSucesso">
-  <div class="modal">
-    <div class="modal-icon">✓</div>
-    <h2>PDF gerado!</h2>
-    <p>Sua avaliação foi baixada. Agora <strong>envie o PDF</strong> para o e-mail:</p>
-    <p style="background: white; padding: 12px 16px; border-radius: 4px; font-family: var(--display); font-weight: 700; color: var(--azul); font-size: 16px; margin-bottom: 24px; word-break: break-all;">rafaelrodrigues@casadagrafica.com</p>
-    <button type="button" class="btn btn-primary" onclick="document.getElementById('modalSucesso').classList.remove('show')">Entendi</button>
-  </div>
-</div>
-
-<script>
-// ============================================================
-// CONFIGURAÇÃO
-// ============================================================
-const EMAIL_DESTINO = "rafaelrodrigues@casadagrafica.com";
-const STORAGE_KEY = "escola40_pesquisa_rascunho";
-
-// ============================================================
-// DADOS DAS AULAS
-// ============================================================
-const aulas = [
-  { num: 1, titulo: "História da CDG", instrutor: "Rafael Rodrigues" },
-  { num: 2, titulo: "Comunicação", instrutor: "Macarrão" },
-  { num: 3, titulo: "IA", instrutor: "Frankie" },
-  { num: 4, titulo: "Marketing e Vendas", instrutor: "Rafael Rodrigues" },
-  { num: 5, titulo: "Design Vendedor", instrutor: "Poliana Barbosa" },
-  { num: 6, titulo: "Propósito e Carreira", instrutor: "Suellem Aglio" },
-  { num: 7, titulo: "Método DISC", instrutor: "Suellem Aglio" },
-  { num: 8, titulo: "Disciplina e Auto Gestão", instrutor: "Diego Brugiolo" },
-  { num: 9, titulo: "Como Ganhar Mais", instrutor: "Rafael Rodrigues" },
-  { num: 10, titulo: "Cultura e Liderança", instrutor: "Nayene Cruz" },
-  { num: 11, titulo: "Varejo", instrutor: "Ricali Rodrigues" },
-  { num: 12, titulo: "Finanças", instrutor: "Felipe Dutra" },
-  { num: 13, titulo: "Encantamento e Experiência do Cliente", instrutor: "Laura Rezende" },
-  { num: 14, titulo: "Acabamento (Teoria)", instrutor: "Michel Oliveira" },
-  { num: 15, titulo: "Acabamento (Prática)", instrutor: "Thiago e Vinícius" },
-  { num: 16, titulo: "Impressão (Teoria)", instrutor: "Michel Oliveira" },
-  { num: 17, titulo: "Impressão (Prática)", instrutor: "Leonam e Amanda" }
-];
-
-// ============================================================
-// CONSTRUIR HTML DAS AULAS
-// ============================================================
-function construirAulas() {
-  const container = document.getElementById('aulas-container');
-  let html = '';
-  aulas.forEach(a => {
-    const numStr = String(a.num).padStart(2, '0');
-    html += `
-      <div class="aula">
-        <div class="aula-head">
-          <div class="aula-num">${numStr}</div>
-          <div class="aula-info">
-            <div class="aula-titulo">${a.titulo}</div>
-            <div class="aula-instrutor">${a.instrutor}</div>
-          </div>
-        </div>
-        <div class="escala" data-campo="aula_${a.num}"></div>
-        <div class="escala-legenda">
-          <span>Muito insatisfeito</span>
-          <span>Muito satisfeito</span>
-        </div>
-        <div class="aula-comentario">
-          <label>Comentário (opcional)</label>
-          <textarea name="aula_${a.num}_comentario" placeholder="O que destacou? O que poderia melhorar?"></textarea>
-        </div>
-      </div>
-    `;
-  });
-  container.innerHTML = html;
-}
-
-// ============================================================
-// CONSTRUIR ESCALAS 1-10
-// ============================================================
-function construirEscalas() {
-  // Escalas de 1 a 10 (aulas e curso geral)
-  document.querySelectorAll('.escala').forEach(escala => {
-    const campo = escala.dataset.campo;
-    let html = `<input type="hidden" name="${campo}" id="${campo}_input">`;
-    for (let i = 1; i <= 10; i++) {
-      html += `<button type="button" class="escala-btn" data-nota="${i}" data-campo="${campo}">${i}</button>`;
-    }
-    escala.innerHTML = html;
-  });
-
-  // Escala NPS (0 a 10)
-  document.querySelectorAll('.nps-escala').forEach(escala => {
-    const campo = escala.dataset.campo;
-    let html = `<input type="hidden" name="${campo}" id="${campo}_input">`;
-    for (let i = 0; i <= 10; i++) {
-      html += `<button type="button" class="nps-btn" data-nota="${i}" data-campo="${campo}">${i}</button>`;
-    }
-    escala.innerHTML = html;
-  });
-
-  // Adicionar event listeners
-  document.querySelectorAll('.escala-btn, .nps-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const campo = btn.dataset.campo;
-      const nota = btn.dataset.nota;
-      // Limpar outros botões do mesmo campo
-      document.querySelectorAll(`[data-campo="${campo}"]`).forEach(b => {
-        if (b.tagName === 'BUTTON') b.classList.remove('ativo');
-      });
-      // Marcar o atual
-      btn.classList.add('ativo');
-      // Atualizar input hidden
-      const input = document.getElementById(`${campo}_input`);
-      if (input) input.value = nota;
-      // Salvar e atualizar progresso
-      salvarRascunho();
-      atualizarProgresso();
-    });
-  });
-}
-
-// ============================================================
-// AUTO-SAVE
-// ============================================================
-let saveTimer;
-function salvarRascunho() {
-  const dados = coletarDados();
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(dados));
-    mostrarSalvo();
-  } catch(e) {
-    console.warn("Erro ao salvar:", e);
-  }
-}
-
-function mostrarSalvo() {
-  const msg = document.getElementById('salvoMsg');
-  msg.classList.add('show');
-  clearTimeout(saveTimer);
-  saveTimer = setTimeout(() => msg.classList.remove('show'), 1500);
-}
-
-function carregarRascunho() {
-  try {
-    const dados = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-    Object.keys(dados).forEach(nome => {
-      const valor = dados[nome];
-      if (!valor) return;
-      // Campos de texto
-      const campoInput = document.querySelector(`input[name="${nome}"], textarea[name="${nome}"]`);
-      if (campoInput) {
-        campoInput.value = valor;
-        return;
-      }
-      // Campos hidden de escala
-      const escalaInput = document.getElementById(`${nome}_input`);
-      if (escalaInput) {
-        escalaInput.value = valor;
-        const btn = document.querySelector(`button[data-campo="${nome}"][data-nota="${valor}"]`);
-        if (btn) btn.classList.add('ativo');
-      }
-    });
-  } catch(e) {
-    console.warn("Erro ao carregar rascunho:", e);
-  }
-}
-
-// ============================================================
-// COLETAR DADOS
-// ============================================================
-function coletarDados() {
-  const dados = { timestamp: new Date().toISOString() };
-  // Inputs e textareas
-  document.querySelectorAll('input, textarea').forEach(c => {
-    if (c.name) dados[c.name] = c.value;
-  });
-  return dados;
-}
-
-// ============================================================
-// BARRA DE PROGRESSO
-// ============================================================
-function atualizarProgresso() {
-  // Campos obrigatórios para 100%: ID + curso_geral + 17 aulas + nps = 4 + 1 + 17 + 1 = 23
-  const obrigatorios = ['nome', 'setor', 'cargo', 'data', 'curso_geral', 'nps', 'melhor_aula', 'sugestoes'];
-  for (let i = 1; i <= 17; i++) obrigatorios.push(`aula_${i}`);
-
-  let preenchidos = 0;
-  obrigatorios.forEach(nome => {
-    const input = document.querySelector(`input[name="${nome}"], textarea[name="${nome}"]`) || document.getElementById(`${nome}_input`);
-    if (input && input.value.trim().length > 0) preenchidos++;
-  });
-
-  const total = obrigatorios.length;
-  const pct = Math.round((preenchidos / total) * 100);
-  document.getElementById('progressBar').style.width = pct + '%';
-  document.getElementById('progressText').textContent = `${pct}% preenchido`;
-
-  // Aviso de notas pendentes
-  const camposNota = ['curso_geral', 'nps'];
-  for (let i = 1; i <= 17; i++) camposNota.push(`aula_${i}`);
-  let notasPendentes = 0;
-  camposNota.forEach(c => {
-    const input = document.getElementById(`${c}_input`);
-    if (!input || !input.value.trim()) notasPendentes++;
-  });
-
-  const avisoEl = document.getElementById('avisoPendentes');
-  if (notasPendentes === 0) {
-    avisoEl.innerHTML = '✓ Todas as notas dadas';
-    avisoEl.className = 'aviso-pendentes completo';
-  } else if (notasPendentes < camposNota.length) {
-    avisoEl.innerHTML = `⚠ ${notasPendentes} ${notasPendentes === 1 ? 'nota pendente' : 'notas pendentes'}`;
-    avisoEl.className = 'aviso-pendentes show';
-  } else {
-    avisoEl.className = 'aviso-pendentes';
-  }
-}
-
-// ============================================================
-// VALIDAÇÃO
-// ============================================================
-function validarCamposObrigatorios() {
-  const obrigatorios = ['nome', 'setor', 'cargo', 'data'];
-  for (let nome of obrigatorios) {
-    const campo = document.querySelector(`[name="${nome}"]`);
-    if (!campo.value.trim()) {
-      alert(`Preencha o campo "${nome}" antes de enviar.`);
-      campo.focus();
-      campo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return false;
-    }
-  }
-  return true;
-}
-
-// ============================================================
-// GERAR PDF
-// ============================================================
-function baixarPDF() {
-  if (!validarCamposObrigatorios()) return;
-
-  if (typeof window.jspdf === 'undefined') {
-    alert('A ferramenta de PDF ainda está carregando. Aguarde alguns segundos e tente novamente.');
-    return;
-  }
-
-  // Verificar notas pendentes
-  const camposNota = [{ id: 'curso_geral', label: 'Avaliação Geral do Curso' }];
-  aulas.forEach(a => camposNota.push({ id: `aula_${a.num}`, label: `Aula ${a.num} (${a.titulo})` }));
-  camposNota.push({ id: 'nps', label: 'NPS / Recomendação' });
-
-  const vazias = camposNota.filter(c => {
-    const input = document.getElementById(`${c.id}_input`);
-    return !input || !input.value.trim();
-  });
-
-  if (vazias.length > 0) {
-    const lista = vazias.slice(0, 5).map(v => v.label).join(', ');
-    const resto = vazias.length > 5 ? ` e mais ${vazias.length - 5}` : '';
-    const continuar = confirm(
-      `⚠️ ATENÇÃO\n\nVocê deixou ${vazias.length} avaliação(ões) sem nota:\n\n${lista}${resto}\n\n• OK = Gerar PDF assim mesmo\n• CANCELAR = Voltar e completar`
-    );
-    if (!continuar) {
-      const primeira = vazias[0];
-      const btn = document.querySelector(`button[data-campo="${primeira.id}"]`);
-      if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      return;
-    }
-  }
-
-  const btn = event.target;
-  const textoOriginal = btn.innerHTML;
-  btn.innerHTML = '⏳ Gerando PDF...';
-  btn.disabled = true;
-
-  setTimeout(() => {
-    try {
-      gerarPDF();
-      btn.innerHTML = textoOriginal;
-      btn.disabled = false;
-    } catch (err) {
-      console.error('Erro:', err);
-      btn.innerHTML = textoOriginal;
-      btn.disabled = false;
-      alert('Houve um erro ao gerar o PDF. Tente novamente.\n\nDetalhe: ' + err.message);
-    }
-  }, 100);
-}
-
-function gerarPDF() {
-  const dados = coletarDados();
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
-
-  const AZUL = [31, 58, 95];
-  const VERMELHO = [200, 16, 46];
-  const CINZA = [89, 89, 89];
-  const CINZA_CLARO = [180, 180, 180];
-  const VERDE = [45, 122, 79];
-  const LARANJA = [245, 158, 11];
-  const VERMELHO_NOTA = [220, 38, 38];
-
-  const margemEsq = 18;
-  const margemDir = 18;
-  const margemTopo = 20;
-  const margemBaixo = 20;
-  const larguraPagina = 210;
-  const alturaPagina = 297;
-  const larguraConteudo = larguraPagina - margemEsq - margemDir;
-
-  let y = margemTopo;
-  let numeroPagina = 1;
-
-  function adicionarRodape() {
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(8);
-    doc.setTextColor(...CINZA_CLARO);
-    doc.text('Escola 40+ | Pesquisa de Satisfação | Casa da Gráfica', margemEsq, alturaPagina - 10);
-    doc.text(`Página ${numeroPagina}`, larguraPagina - margemDir, alturaPagina - 10, { align: 'right' });
-  }
-
-  function novaPagina() {
-    adicionarRodape();
-    doc.addPage();
-    numeroPagina++;
-    y = margemTopo;
-  }
-
-  function verificarEspaco(altura) {
-    if (y + altura > alturaPagina - margemBaixo) {
-      novaPagina();
-      return true;
-    }
-    return false;
-  }
-
-  function corParaNota(nota) {
-    const n = parseInt(nota);
-    if (n <= 3) return VERMELHO_NOTA;
-    if (n <= 6) return LARANJA;
-    if (n <= 8) return AZUL;
-    return VERDE;
-  }
-
-  // ---------- CAPA ----------
-  doc.setFillColor(...AZUL);
-  doc.rect(0, 0, larguraPagina, 60, 'F');
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(255, 255, 255);
-  doc.text('CASA DA GRÁFICA  •  ESCOLA 40+', margemEsq, 22);
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(26);
-  doc.text('Pesquisa de Satisfação', margemEsq, 36);
-
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(13);
-  doc.setTextColor(242, 184, 193);
-  doc.text('Avaliação do programa', margemEsq, 46);
-
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(8);
-  doc.setTextColor(255, 255, 255);
-  doc.text('"Quem ouve, melhora."', larguraPagina - margemDir, 53, { align: 'right' });
-
-  y = 75;
-
-  // ---------- IDENTIFICAÇÃO ----------
-  doc.setFillColor(244, 241, 234);
-  doc.rect(margemEsq, y, larguraConteudo, 34, 'F');
-  doc.setDrawColor(...VERMELHO);
-  doc.setLineWidth(0.8);
-  doc.line(margemEsq, y, margemEsq, y + 34);
-
-  let yIdent = y + 8;
-  function linhaIdent(label, valor) {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(9);
-    doc.setTextColor(...CINZA);
-    doc.text(label.toUpperCase(), margemEsq + 6, yIdent);
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(11);
-    doc.setTextColor(0, 0, 0);
-    doc.text(valor || '—', margemEsq + 40, yIdent);
-    yIdent += 7;
-  }
-  linhaIdent('Nome', dados.nome);
-  linhaIdent('Setor', dados.setor);
-  linhaIdent('Cargo', dados.cargo);
-  linhaIdent('Data', dados.data);
-  y += 44;
-
-  // ---------- AVALIAÇÃO GERAL ----------
-  const notaGeral = dados.curso_geral || '—';
-  doc.setFillColor(...AZUL);
-  doc.rect(margemEsq, y, larguraConteudo, 28, 'F');
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(9);
-  doc.setTextColor(242, 184, 193);
-  doc.text('AVALIAÇÃO GERAL DO CURSO', margemEsq + 6, y + 9);
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(12);
-  doc.setTextColor(255, 255, 255);
-  doc.text('Nota global da Escola 40+', margemEsq + 6, y + 18);
-
-  // Box da nota
-  if (dados.curso_geral) {
-    const corNota = corParaNota(dados.curso_geral);
-    doc.setFillColor(...corNota);
-    doc.roundedRect(larguraPagina - margemDir - 32, y + 6, 26, 16, 2, 2, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.setTextColor(255, 255, 255);
-    doc.text(notaGeral.toString(), larguraPagina - margemDir - 19, y + 17, { align: 'center' });
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7);
-    doc.text('/ 10', larguraPagina - margemDir - 19, y + 22, { align: 'center' });
-  } else {
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(10);
-    doc.setTextColor(255, 255, 255);
-    doc.text('Sem nota', larguraPagina - margemDir - 6, y + 17, { align: 'right' });
-  }
-  y += 38;
-
-  // ---------- AULAS ----------
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(14);
-  doc.setTextColor(...AZUL);
-  doc.text('AVALIAÇÃO POR AULA', margemEsq, y);
-  doc.setDrawColor(...AZUL);
-  doc.setLineWidth(0.5);
-  doc.line(margemEsq, y + 2, margemEsq + 50, y + 2);
-  y += 10;
-
-  aulas.forEach(a => {
-    const nota = dados[`aula_${a.num}`];
-    const comentario = dados[`aula_${a.num}_comentario`];
-
-    // Calcular altura necessária
-    let alturaNecessaria = 16;
-    if (comentario && comentario.trim()) {
-      const linhas = doc.splitTextToSize(comentario, larguraConteudo - 16);
-      alturaNecessaria += linhas.length * 4 + 6;
-    }
-    verificarEspaco(alturaNecessaria);
-
-    // Número da aula
-    const numStr = String(a.num).padStart(2, '0');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(14);
-    doc.setTextColor(...AZUL);
-    doc.text(numStr, margemEsq, y);
-
-    // Título e instrutor
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.setTextColor(0, 0, 0);
-    doc.text(a.titulo, margemEsq + 10, y - 1);
-
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(8);
-    doc.setTextColor(...CINZA);
-    doc.text(a.instrutor, margemEsq + 10, y + 3);
-
-    // Nota (box colorido à direita)
-    if (nota) {
-      const corNota = corParaNota(nota);
-      doc.setFillColor(...corNota);
-      doc.roundedRect(larguraPagina - margemDir - 20, y - 4, 18, 10, 1.5, 1.5, 'F');
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(11);
-      doc.setTextColor(255, 255, 255);
-      doc.text(nota.toString(), larguraPagina - margemDir - 11, y + 2.5, { align: 'center' });
-    } else {
-      doc.setFont('helvetica', 'italic');
-      doc.setFontSize(8);
-      doc.setTextColor(...CINZA_CLARO);
-      doc.text('sem nota', larguraPagina - margemDir, y + 2, { align: 'right' });
-    }
-
-    y += 8;
-
-    // Comentário (se houver)
-    if (comentario && comentario.trim()) {
-      doc.setFont('helvetica', 'italic');
-      doc.setFontSize(9);
-      doc.setTextColor(...CINZA);
-      doc.text('"', margemEsq + 10, y + 1);
-      const linhas = doc.splitTextToSize(comentario, larguraConteudo - 16);
-      linhas.forEach(linha => {
-        verificarEspaco(4);
-        doc.text(linha, margemEsq + 13, y);
-        y += 4;
-      });
-      y += 3;
-    } else {
-      y += 2;
-    }
-
-    // Linha divisória
-    doc.setDrawColor(...CINZA_CLARO);
-    doc.setLineWidth(0.1);
-    doc.line(margemEsq, y, larguraPagina - margemDir, y);
-    y += 4;
-  });
-
-  y += 4;
-
-  // ---------- NPS ----------
-  verificarEspaco(30);
-  const npsNota = dados.nps || '—';
-  doc.setFillColor(244, 241, 234);
-  doc.rect(margemEsq, y, larguraConteudo, 24, 'F');
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.setTextColor(...AZUL);
-  doc.text('RECOMENDAÇÃO (NPS)', margemEsq + 6, y + 8);
-
-  doc.setFont('helvetica', 'italic');
-  doc.setFontSize(9);
-  doc.setTextColor(...CINZA);
-  doc.text('Quanto recomendaria a Escola 40+ a um colega', margemEsq + 6, y + 15);
-
-  if (dados.nps !== undefined && dados.nps !== '') {
-    const corNps = corParaNota(dados.nps);
-    doc.setFillColor(...corNps);
-    doc.roundedRect(larguraPagina - margemDir - 32, y + 4, 26, 16, 2, 2, 'F');
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(16);
-    doc.setTextColor(255, 255, 255);
-    doc.text(npsNota.toString(), larguraPagina - margemDir - 19, y + 15, { align: 'center' });
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(7);
-    doc.text('/ 10', larguraPagina - margemDir - 19, y + 20, { align: 'center' });
-  }
-  y += 32;
-
-  // ---------- MELHOR AULA ----------
-  if (dados.melhor_aula && dados.melhor_aula.trim()) {
-    verificarEspaco(20);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(...VERMELHO);
-    doc.text('AULA QUE MAIS MARCOU', margemEsq, y);
-    y += 6;
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.setTextColor(20, 20, 20);
-    const linhas = doc.splitTextToSize(dados.melhor_aula, larguraConteudo);
-    linhas.forEach(linha => {
-      verificarEspaco(5);
-      doc.text(linha, margemEsq, y);
-      y += 5;
-    });
-    y += 6;
-  }
-
-  // ---------- SUGESTÕES ----------
-  if (dados.sugestoes && dados.sugestoes.trim()) {
-    verificarEspaco(20);
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(...VERMELHO);
-    doc.text('SUGESTÕES DE MELHORIA', margemEsq, y);
-    y += 6;
-
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.setTextColor(20, 20, 20);
-    const linhas = doc.splitTextToSize(dados.sugestoes, larguraConteudo);
-    linhas.forEach(linha => {
-      verificarEspaco(5);
-      doc.text(linha, margemEsq, y);
-      y += 5;
-    });
-  }
-
-  adicionarRodape();
-
-  // ---------- DOWNLOAD ----------
-  const nomeArquivo = (dados.nome || 'sem_nome')
-    .replace(/[^a-z0-9\s]/gi, '')
-    .replace(/\s+/g, '_')
-    .toLowerCase();
-  const nomeCompleto = `Escola40_Pesquisa_${nomeArquivo}.pdf`;
-
-  const ehMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-  const ehIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  if (ehIOS) {
-    const pdfDataUri = doc.output('datauristring', { filename: nomeCompleto });
-    const novaJanela = window.open();
-    if (novaJanela) {
-      novaJanela.document.write(`
-        <html>
-        <head>
-          <title>${nomeCompleto}</title>
-          <style>
-            body { margin: 0; font-family: -apple-system, sans-serif; background: #1F3A5F; color: white; text-align: center; padding: 20px; }
-            .aviso { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 8px; margin-bottom: 20px; }
-            h2 { margin: 0 0 12px; }
-            p { margin: 8px 0; line-height: 1.5; }
-            iframe { width: 100%; height: 80vh; border: 0; background: white; border-radius: 4px; }
-            strong { color: #F2B8C1; }
-          </style>
-        </head>
-        <body>
-          <div class="aviso">
-            <h2>📄 Seu PDF está pronto</h2>
-            <p>Toque no botão <strong>Compartilhar</strong> do Safari e envie por e-mail ou WhatsApp para:</p>
-            <p><strong>rafaelrodrigues@casadagrafica.com</strong></p>
-          </div>
-          <iframe src="${pdfDataUri}"></iframe>
-        </body>
-        </html>
-      `);
-      novaJanela.document.close();
-    } else {
-      window.location.href = pdfDataUri;
-    }
-    document.getElementById('modalSucesso').classList.add('show');
-  } else if (ehMobile) {
-    try {
-      doc.save(nomeCompleto);
-      document.getElementById('modalSucesso').classList.add('show');
-    } catch (e) {
-      const pdfBlob = doc.output('blob');
-      const url = URL.createObjectURL(pdfBlob);
-      window.open(url, '_blank');
-      document.getElementById('modalSucesso').classList.add('show');
-    }
-  } else {
-    doc.save(nomeCompleto);
-    document.getElementById('modalSucesso').classList.add('show');
-  }
-}
-
-// ============================================================
-// INICIALIZAÇÃO
-// ============================================================
-window.addEventListener('load', () => {
-  construirAulas();
-  construirEscalas();
-  carregarRascunho();
-  document.getElementById('data').valueAsDate = new Date();
-
-  // Auto-save em todos os campos
-  let saveTimerRapido;
-  document.querySelectorAll('input, textarea').forEach(campo => {
-    campo.addEventListener('input', () => {
-      clearTimeout(saveTimerRapido);
-      saveTimerRapido = setTimeout(salvarRascunho, 100);
-      atualizarProgresso();
-    });
-    campo.addEventListener('blur', salvarRascunho);
-  });
-
-  atualizarProgresso();
-});
-
-window.addEventListener('beforeunload', salvarRascunho);
-</script>
-
+    </div>
+
+    <script>
+        // Credenciais Trello
+        const API_KEY = '846cfa37f4cd5a5198cd68a0eb0df811';
+        const API_TOKEN = 'ATTAea3fcab687908397067e121e7731d117935697bc013e6fcad039c1cf1c6f7eea47C8795E';
+        const ID_LIST = '6a283b2724c1ede3ced936ce';
+
+        // Mapeamentos opcionais para automacao
+        const PRIORITY_LABELS = {
+            Baixa: '',
+            Media: '',
+            Alta: '',
+            Urgente: ''
+        };
+
+        const MEMBER_MAP = {
+            analista_1: '',
+            analista_2: '',
+            infra: ''
+        };
+
+        const CHECKLIST_BY_CATEGORY = {
+            Incidente: [
+                'Validar impacto e escopo',
+                'Analisar logs e evidencias',
+                'Definir plano de correcao',
+                'Executar testes de regressao',
+                'Comunicar resolucao ao solicitante'
+            ],
+            Solicitacao: [
+                'Refinar necessidade com solicitante',
+                'Definir prazo e responsavel',
+                'Executar implementacao',
+                'Validar entrega com solicitante'
+            ],
+            Melhoria: [
+                'Avaliar ganho x esforco',
+                'Especificar criterio de aceite',
+                'Planejar entrega',
+                'Aplicar e validar melhoria'
+            ],
+            Acesso: [
+                'Validar aprovacao de gestor',
+                'Aplicar permissao solicitada',
+                'Testar acesso',
+                'Registrar evidencia de conclusao'
+            ]
+        };
+
+        const MAX_FILE_SIZE = 10 * 1024 * 1024;
+        const ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'pdf', 'xls', 'xlsx', 'csv', 'doc', 'docx', 'txt'];
+
+        function normalizeText(value) {
+            return (value || '').trim().replace(/\s+/g, ' ');
+        }
+
+        function buildCardTitle(setor, titulo, prioridade) {
+            return `[${setor}] ${titulo} (${prioridade})`;
+        }
+
+        function getIsoDueDate(dateString) {
+            if (!dateString) return null;
+            return `${dateString}T12:00:00.000Z`;
+        }
+
+        async function trelloRequest(path, { method = 'GET', params = {}, body = null, isFormData = false } = {}) {
+            const url = new URL(`https://api.trello.com/1/${path}`);
+            url.searchParams.set('key', API_KEY);
+            url.searchParams.set('token', API_TOKEN);
+
+            Object.entries(params).forEach(([key, value]) => {
+                if (value !== undefined && value !== null && value !== '') {
+                    url.searchParams.set(key, value);
+                }
+            });
+
+            const fetchOptions = {
+                method,
+                headers: {
+                    Accept: 'application/json'
+                }
+            };
+
+            if (body) {
+                if (isFormData) {
+                    fetchOptions.body = body;
+                } else {
+                    fetchOptions.headers['Content-Type'] = 'application/json';
+                    fetchOptions.body = JSON.stringify(body);
+                }
+            }
+
+            const response = await fetch(url.toString(), fetchOptions);
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Trello ${response.status}: ${errorText || 'erro desconhecido'}`);
+            }
+
+            return response.json();
+        }
+
+        function clearInvalidFields(form) {
+            form.querySelectorAll('.invalid').forEach((el) => el.classList.remove('invalid'));
+        }
+
+        function validateForm(formData, file) {
+            const errors = [];
+
+            if (!formData.solicitante) errors.push({ field: 'solicitante', message: 'Informe o solicitante.' });
+            if (!formData.setor) errors.push({ field: 'setor', message: 'Informe o setor.' });
+            if (!formData.email) errors.push({ field: 'email', message: 'Informe o e-mail corporativo.' });
+            if (!formData.titulo || formData.titulo.length < 8) errors.push({ field: 'titulo', message: 'Titulo deve ter ao menos 8 caracteres.' });
+            if (!formData.prioridade) errors.push({ field: 'prioridade', message: 'Selecione a prioridade.' });
+            if (!formData.categoria) errors.push({ field: 'categoria', message: 'Selecione a categoria.' });
+            if (!formData.impacto) errors.push({ field: 'impacto', message: 'Selecione o impacto.' });
+            if (!formData.ambiente) errors.push({ field: 'ambiente', message: 'Selecione o ambiente.' });
+            if (!formData.descricao || formData.descricao.length < 20) errors.push({ field: 'descricao', message: 'Descricao deve ter ao menos 20 caracteres.' });
+            if (!formData.aceite) errors.push({ field: 'aceite', message: 'Confirme o aceite para continuar.' });
+
+            if (file) {
+                const extension = file.name.split('.').pop().toLowerCase();
+                if (!ALLOWED_EXTENSIONS.includes(extension)) {
+                    errors.push({ field: 'anexo', message: 'Formato de arquivo nao permitido.' });
+                }
+                if (file.size > MAX_FILE_SIZE) {
+                    errors.push({ field: 'anexo', message: 'Arquivo excede 10 MB.' });
+                }
+            }
+
+            return errors;
+        }
+
+        function buildCardDescription(formData) {
+            return [
+                `**Solicitante:** ${formData.solicitante}`,
+                `**Setor:** ${formData.setor}`,
+                `**Email:** ${formData.email}`,
+                `**Categoria:** ${formData.categoria}`,
+                `**Impacto:** ${formData.impacto}`,
+                `**Ambiente:** ${formData.ambiente}`,
+                `**Prioridade:** ${formData.prioridade}`,
+                `**Data desejada:** ${formData.dataEntrega || 'Nao informada'}`,
+                '',
+                '**Descricao detalhada:**',
+                formData.descricao
+            ].join('\n');
+        }
+
+        function buildTechComment(formData) {
+            return [
+                'Resumo tecnico de abertura:',
+                `- Tipo: ${formData.categoria}`,
+                `- Impacto: ${formData.impacto}`,
+                `- Ambiente: ${formData.ambiente}`,
+                `- Responsavel inicial: ${formData.responsavel || 'Nao definido'}`,
+                `- Origem: Portal de Demandas TI`
+            ].join('\n');
+        }
+
+        document.getElementById('ticketForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = document.getElementById('ticketForm');
+            const btn = document.getElementById('submitBtn');
+            const btnText = document.getElementById('btnText');
+            const btnLoader = document.getElementById('btnLoader');
+            const fileInput = document.getElementById('anexo');
+
+            clearInvalidFields(form);
+
+            const formData = {
+                solicitante: normalizeText(document.getElementById('solicitante').value),
+                setor: normalizeText(document.getElementById('setor').value),
+                email: normalizeText(document.getElementById('email').value),
+                titulo: normalizeText(document.getElementById('titulo').value),
+                prioridade: document.getElementById('prioridade').value,
+                categoria: document.getElementById('categoria').value,
+                impacto: document.getElementById('impacto').value,
+                ambiente: document.getElementById('ambiente').value,
+                responsavel: document.getElementById('responsavel').value,
+                dataEntrega: document.getElementById('data_entrega').value,
+                descricao: normalizeText(document.getElementById('descricao').value),
+                optChecklist: document.getElementById('optChecklist').checked,
+                optComment: document.getElementById('optComment').checked,
+                optTop: document.getElementById('optTop').checked,
+                aceite: document.getElementById('aceite').checked
+            };
+
+            const selectedFile = fileInput.files.length > 0 ? fileInput.files[0] : null;
+            const errors = validateForm(formData, selectedFile);
+
+            if (errors.length > 0) {
+                errors.forEach((err) => {
+                    const field = document.getElementById(err.field);
+                    if (field) {
+                        field.classList.add('invalid');
+                    }
+                });
+
+                Swal.fire({
+                    title: 'Campos pendentes',
+                    text: errors[0].message,
+                    icon: 'warning',
+                    confirmButtonColor: '#0b3b67'
+                });
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+            btnText.innerText = "Processando...";
+            btnLoader.style.display = "block";
+
+            try {
+                const cardPayload = {
+                    idList: ID_LIST,
+                    name: buildCardTitle(formData.setor, formData.titulo, formData.prioridade),
+                    desc: buildCardDescription(formData),
+                    due: getIsoDueDate(formData.dataEntrega),
+                    pos: formData.optTop ? 'top' : 'bottom',
+                    idLabels: PRIORITY_LABELS[formData.prioridade] || undefined,
+                    idMembers: MEMBER_MAP[formData.responsavel] || undefined
+                };
+
+                const card = await trelloRequest('cards', {
+                    method: 'POST',
+                    params: cardPayload
+                });
+
+                if (formData.optChecklist) {
+                    btnText.innerText = 'Criando checklist...';
+                    const checklist = await trelloRequest(`cards/${card.id}/checklists`, {
+                        method: 'POST',
+                        params: { name: `Fluxo ${formData.categoria}` }
+                    });
+
+                    const items = CHECKLIST_BY_CATEGORY[formData.categoria] || [];
+                    for (const itemName of items) {
+                        await trelloRequest(`checklists/${checklist.id}/checkItems`, {
+                            method: 'POST',
+                            params: { name: itemName }
+                        });
+                    }
+                }
+
+                if (formData.optComment) {
+                    btnText.innerText = 'Anexando observacoes...';
+                    await trelloRequest(`cards/${card.id}/actions/comments`, {
+                        method: 'POST',
+                        params: { text: buildTechComment(formData) }
+                    });
+                }
+
+                if (selectedFile) {
+                    btnText.innerText = "Enviando anexo...";
+                    
+                    const formData = new FormData();
+                    formData.append("key", API_KEY);
+                    formData.append("token", API_TOKEN);
+                    formData.append("file", selectedFile);
+
+                    await trelloRequest(`cards/${card.id}/attachments`, {
+                        method: 'POST',
+                        body: formData,
+                        isFormData: true
+                    });
+                }
+
+                Swal.fire({
+                    title: 'Chamado Aberto!',
+                    html: `Sua demanda foi enviada para a equipe de TI.<br><a href="${card.shortUrl}" target="_blank" rel="noopener noreferrer" style="color:#0b3b67;text-decoration:underline;">Abrir card no Trello</a>`,
+                    icon: 'success',
+                    confirmButtonColor: '#0b3b67'
+                });
+
+                form.reset();
+
+            } catch (error) {
+                console.error(error);
+                Swal.fire({
+                    title: 'Ops!',
+                    text: `Houve um erro ao enviar sua demanda. ${error.message}`,
+                    icon: 'error',
+                    confirmButtonColor: '#0b3b67'
+                });
+            } finally {
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+                btnText.innerText = "Enviar Solicitação";
+                btnLoader.style.display = "none";
+            }
+        });
+    </script>
 </body>
 </html>
